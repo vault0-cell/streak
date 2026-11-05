@@ -55,7 +55,7 @@
   .ca{margin-top:20px;color:var(--dim);font-size:13px}
   .ca .mono{color:var(--text);background:var(--panel2);border:1px solid var(--line);padding:3px 10px;border-radius:6px}
   /* HUD */
-  .hud{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:44px 0 8px}
+  .hud{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:44px 0 8px}
   .hud .cell{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 14px;text-align:left;position:relative;overflow:hidden}
   .hud .cell::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--green)}
   .hud .cell.gold::before{background:var(--gold)}
@@ -65,6 +65,11 @@
   .hud .val{font-size:26px;font-weight:900;margin-top:4px}
   .hud .val small{font-size:13px;color:var(--dim);font-weight:600}
   .demo-tag{display:inline-block;font-size:10px;letter-spacing:1px;color:#0b0e12;background:var(--gold);border-radius:4px;padding:1px 6px;font-weight:800;vertical-align:middle;margin-left:8px}
+  /* LIVE-FEEL: accruing estimate line + stale price marking */
+  .est-line{font-size:11.5px;color:var(--dim);margin-top:3px;letter-spacing:.4px;font-weight:600}
+  .stale-tag{display:none;font-size:10px;letter-spacing:1px;color:#fff;background:var(--red);border-radius:4px;padding:1px 6px;font-weight:800;vertical-align:middle;margin-left:8px}
+  .hud .cell.stale .stale-tag{display:inline-block}
+  .hud .cell.stale .val{opacity:.5}
   /* SECTIONS */
   section{padding:56px 0 8px}
   h2{font-size:30px;font-weight:900;letter-spacing:.5px;margin-bottom:8px}
@@ -205,10 +210,12 @@
   <div class="ca">Contract address: <span class="mono">— announced only here and on the official X —</span></div>
 
   <div class="hud">
-    <div class="cell gold"><div class="k">JACKPOT POOL <span class="demo-tag">DEMO</span></div><div class="val mono" id="jackpot">0.0068 <small>SOL</small></div></div>
-    <div class="cell"><div class="k">CURRENT ROUND</div><div class="val mono"><span id="round">#1</span> <small>· next in <span id="countdown">10:00</span></small></div></div>
-    <div class="cell violet"><div class="k">SURVIVORS</div><div class="val mono" id="survivors">0 <small>wallets</small></div></div>
+    <div class="cell gold"><div class="k">JACKPOT POOL <span class="demo-tag">DEMO</span></div><div class="val mono" id="jackpot">0.0068 <small>SOL</small></div><div class="est-line mono" id="jackpotEst" hidden>+0.000000 SOL accruing · EST</div></div>
+    <div class="cell"><div class="k">CURRENT ROUND</div><div class="val mono"><span id="round">#1</span> <small>· <span id="countdown">next in 10:00</span></small></div></div>
+    <div class="cell violet"><div class="k">SURVIVORS</div><div class="val mono" id="survivors">0 <small>wallets</small></div><div class="est-line mono" id="survivorsEst" hidden>+0.000000 SOL to survivors · EST</div></div>
     <div class="cell red"><div class="k">TOTAL BURNED</div><div class="val mono" id="totalBurned">0 <small>$STREAK</small></div></div>
+    <div class="cell" id="priceCell"><div class="k">PRICE <span class="demo-tag">DEMO</span><span class="stale-tag">STALE</span></div><div class="val mono" id="priceUsd">—</div></div>
+    <div class="cell gold" id="mcapCell"><div class="k">MARKET CAP <span class="demo-tag">DEMO</span><span class="stale-tag">STALE</span></div><div class="val mono" id="marketCap">—</div></div>
   </div>
   <p id="hudNote" style="color:var(--dim);font-size:12px">HUD figures show the engine's public simulation run. Live figures replace them at launch — every round is published, every payout is on-chain.</p>
 </div></header>
@@ -414,6 +421,18 @@
     var REDUCED = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var hudPrev = { survivors: 0, burned: 0 };
 
+    var ROUND_MS = 600000; // one round = 10 minutes
+    var state = {
+      demo: true,
+      mint: null,
+      roundEndsAt: null,
+      lastJackpotSlice: 0,
+      lastSurvivorsSlice: 0,
+      appliedKey: null,
+      priceTimer: null,
+      priceMisses: 0
+    };
+
     function tweenNumber(render, from, to, duration) {
       if (REDUCED || !(duration > 0) || !isFinite(from) || !isFinite(to)) {
         render(to);
@@ -584,31 +603,155 @@
       return String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
     }
 
-    function startClock(data) {
+    function snapshotKey(data) {
+      var hud = data.hud || {};
+      var firstRound = Array.isArray(data.rounds) && data.rounds.length ? data.rounds[0] : {};
+      return [data.generatedAt || '', hud.round || '', hud.jackpotSol || '',
+        firstRound.round || '', data.demo === false ? 'live' : 'demo',
+        data.mint || '', data.roundEndsAt || ''].join('|');
+    }
+
+    function resolveRoundEnd(data) {
+      var end = number(data.roundEndsAt, NaN);
+      if (Number.isFinite(end) && end > 0) return end;
+      var next = Date.parse((data.hud && data.hud.nextRoundAt) || '');
+      if (Number.isFinite(next)) return next;
+      var generated = Date.parse(data.generatedAt || '');
+      if (Number.isFinite(generated)) return generated + ROUND_MS;
+      return null;
+    }
+
+    function roundWindow() {
+      if (!state.roundEndsAt) return null;
+      var end = state.roundEndsAt;
+      if (state.demo) {
+        // Demo snapshots are static seeds: roll the anchor forward in whole
+        // rounds (phase preserved) so the countdown and estimate stay alive.
+        while (end <= Date.now()) end += ROUND_MS;
+        state.roundEndsAt = end;
+      }
+      return { start: end - ROUND_MS, end: end };
+    }
+
+    function roundFraction() {
+      var w = roundWindow();
+      if (!w) return null;
+      var frac = (Date.now() - w.start) / ROUND_MS;
+      return Math.min(1, Math.max(0, frac));
+    }
+
+    function renderEst() {
+      var frac = roundFraction();
+      var jp = document.getElementById('jackpotEst');
+      var sv = document.getElementById('survivorsEst');
+      if (frac === null) {
+        jp.hidden = true;
+        sv.hidden = true;
+        return;
+      }
+      // Pending slice ≈ last round's actual slice × elapsed fraction.
+      jp.hidden = !(state.lastJackpotSlice > 0);
+      if (!jp.hidden) {
+        jp.textContent = '+' + trimNumber(state.lastJackpotSlice * frac, 6) + ' SOL accruing · EST';
+      }
+      sv.hidden = !(state.lastSurvivorsSlice > 0);
+      if (!sv.hidden) {
+        sv.textContent = '+' + trimNumber(state.lastSurvivorsSlice * frac, 6) + ' SOL to survivors · EST';
+      }
+    }
+
+    function startTicker() {
       if (timerId !== null) window.clearInterval(timerId);
-
       var countdown = document.getElementById('countdown');
-      if (data.demo) {
-        var remaining = 600;
-        countdown.textContent = formatCountdown(remaining * 1000);
-        timerId = window.setInterval(function () {
-          remaining = remaining > 0 ? remaining - 1 : 600;
-          countdown.textContent = formatCountdown(remaining * 1000);
-          setJackpot(jackpotSol + 0.0000011);
-        }, 1000);
-        return;
-      }
-
-      var target = Date.parse(data.hud.nextRoundAt || '');
-      if (!Number.isFinite(target)) {
-        countdown.textContent = '--:--';
-        return;
-      }
       var render = function () {
-        countdown.textContent = formatCountdown(target - Date.now());
+        var w = roundWindow();
+        if (!w) {
+          countdown.textContent = '--:--';
+        } else if (!state.demo && w.end - Date.now() <= 0) {
+          countdown.textContent = 'SETTLING…';
+        } else {
+          countdown.textContent = 'next in ' + formatCountdown(w.end - Date.now());
+        }
+        renderEst();
       };
       render();
       timerId = window.setInterval(render, 1000);
+    }
+
+    function fmtPrice(p) {
+      if (!Number.isFinite(p) || p <= 0) return '—';
+      if (p >= 1) return '$' + p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      if (p >= 0.01) return '$' + p.toFixed(4);
+      var parts = p.toExponential(2).split('e');
+      var digits = parts[0].replace('.', '');
+      var zeros = Math.max(0, -parseInt(parts[1], 10) - 1);
+      return '$0.' + '0'.repeat(zeros) + digits;
+    }
+
+    function fmtMcap(v) {
+      if (!Number.isFinite(v) || v <= 0) return '—';
+      if (v >= 1e9) return '$' + trimNumber(v / 1e9, 2) + 'B';
+      if (v >= 1e6) return '$' + trimNumber(v / 1e6, 2) + 'M';
+      if (v >= 1e3) return '$' + trimNumber(v / 1e3, 1) + 'K';
+      return '$' + trimNumber(v, 0);
+    }
+
+    function setPriceStale(stale) {
+      ['priceCell', 'mcapCell'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('stale', stale);
+      });
+    }
+
+    function fetchPrice() {
+      if (state.demo || !state.mint) return;
+      fetch('https://api.dexscreener.com/latest/dex/tokens/' + encodeURIComponent(state.mint))
+        .then(function (response) {
+          if (!response.ok) throw new Error('dexscreener unavailable');
+          return response.json();
+        })
+        .then(function (json) {
+          var pairs = json && Array.isArray(json.pairs) ? json.pairs : [];
+          var best = null;
+          var bestLiq = -1;
+          pairs.forEach(function (pair) {
+            if (pair.chainId && pair.chainId !== 'solana') return;
+            var liq = pair.liquidity ? Number(pair.liquidity.usd) : NaN;
+            var score = Number.isFinite(liq) ? liq : -1;
+            if (!best || score > bestLiq) { best = pair; bestLiq = score; }
+          });
+          if (!best) throw new Error('no solana pair');
+          var price = Number(best.priceUsd);
+          if (!Number.isFinite(price)) throw new Error('no price');
+          document.getElementById('priceUsd').textContent = fmtPrice(price);
+          document.getElementById('marketCap').textContent =
+            fmtMcap(Number(best.marketCap || best.fdv));
+          state.priceMisses = 0;
+          setPriceStale(false);
+        })
+        .catch(function () {
+          state.priceMisses += 1;
+          if (state.priceMisses >= 2) setPriceStale(true);
+        });
+    }
+
+    function syncPriceFeed() {
+      var live = !state.demo && !!state.mint;
+      if (!live) {
+        if (state.priceTimer !== null) {
+          window.clearInterval(state.priceTimer);
+          state.priceTimer = null;
+        }
+        state.priceMisses = 0;
+        setPriceStale(false);
+        document.getElementById('priceUsd').textContent = '—';
+        document.getElementById('marketCap').textContent = '—';
+        return;
+      }
+      if (state.priceTimer === null) {
+        fetchPrice();
+        state.priceTimer = window.setInterval(fetchPrice, 30000);
+      }
     }
 
     function applyData(data) {
@@ -623,6 +766,14 @@
       document.getElementById('hudNote').textContent = demo
         ? "HUD figures show the engine's public simulation run. Live figures replace them at launch — every round is published, every payout is on-chain."
         : "Live figures from the Survivor Engine's published rounds — every round is published, every payout is on-chain.";
+
+      state.demo = demo;
+      state.mint = typeof data.mint === 'string' && data.mint ? data.mint : null;
+      state.roundEndsAt = resolveRoundEnd(data);
+      if (demo && !state.roundEndsAt) state.roundEndsAt = Date.now() + ROUND_MS;
+      var lastRound = Array.isArray(data.rounds) && data.rounds.length ? data.rounds[0] : null;
+      state.lastJackpotSlice = lastRound ? number(lastRound.jackpotSol, 0) : 0;
+      state.lastSurvivorsSlice = lastRound ? number(lastRound.survivorsPaidSol, 0) : 0;
 
       tweenNumber(function (v) { setJackpot(v); },
         jackpotSol, number(data.hud.jackpotSol, 0), 650);
@@ -640,24 +791,38 @@
       renderLeaderboard(data.leaderboard);
       renderRounds(data.rounds);
       renderFame(data.hallOfFame);
-      startClock({ demo: demo, hud: data.hud });
+      startTicker();
+      syncPriceFeed();
     }
 
     try {
       applyData(FALLBACK_DATA);
+      state.appliedKey = snapshotKey(FALLBACK_DATA);
     } catch (error) {
       // The server-rendered mock values remain usable if the fallback itself fails.
     }
 
-    fetch('./data/latest.json', { cache: 'no-store' })
-      .then(function (response) {
-        if (!response.ok) throw new Error('latest.json unavailable');
-        return response.json();
-      })
-      .then(applyData)
-      .catch(function () {
-        try { applyData(FALLBACK_DATA); } catch (error) { /* Keep the baked-in mock. */ }
-      });
+    function ingest(data) {
+      // Re-apply only when the snapshot actually changed, so unchanged
+      // refreshes never replay the count-up or touch the rendered values.
+      var key = snapshotKey(data);
+      if (key === state.appliedKey) return;
+      applyData(data);
+      state.appliedKey = key;
+    }
+
+    function loadLatest() {
+      fetch('./data/latest.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(function (response) {
+          if (!response.ok) throw new Error('latest.json unavailable');
+          return response.json();
+        })
+        .then(ingest)
+        .catch(function () { /* Keep current values; the next cycle retries. */ });
+    }
+
+    loadLatest();
+    window.setInterval(loadLatest, 60000);
 
     /* ---- Motion pass: split bars, streak scene, leaderboard sweep ---- */
     function onVisible(el, cb, threshold) {

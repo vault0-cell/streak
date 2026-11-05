@@ -13,6 +13,7 @@ missing or invalid, the LP falls back to its baked-in demo values.
   "demo": true,
   "source": "How this snapshot was produced.",
   "generatedAt": "2026-11-05T17:53:20.000Z",
+  "roundEndsAt": 1793901800000,
   "hud": {
     "jackpotSol": 0.006788347,
     "round": 1,
@@ -39,9 +40,11 @@ missing or invalid, the LP falls back to its baked-in demo values.
 | Field | Type | Meaning |
 |---|---|---|
 | `schemaVersion` | number | Schema version. Currently `1`. |
-| `demo` | boolean | `true` keeps the LP's DEMO labels visible and enables the demo countdown/jackpot animation. Set to `false` only for live STREAK data. |
+| `demo` | boolean | `true` keeps the LP's DEMO labels visible. In demo mode the LP makes no external requests: the countdown anchors to `roundEndsAt` (rolled forward in whole rounds) and the accruing estimate interpolates from the demo rounds. Set to `false` only for live STREAK data. |
 | `source` | string | Human-readable provenance for the snapshot. Name the publisher/run and whether the values are simulated or live. |
 | `generatedAt` | string | ISO 8601 UTC timestamp for when the snapshot was generated. |
+| `roundEndsAt` | number | Optional. Epoch **milliseconds** when the current round window ends — the last round's settlement time + 600,000 ms. Drives the HUD countdown and the accruing estimate ("+X SOL accruing · EST" = the last round's actual slice × elapsed fraction of the window). In live mode, once it passes the HUD shows SETTLING until the next snapshot lands. Takes precedence over `hud.nextRoundAt`. |
+| `mint` | string | Optional. The token's mint address. Only meaningful when `demo` is `false`: the LP then polls DexScreener every 30 s for the price / market-cap HUD tiles. Omit entirely from demo snapshots. |
 | `hud` | object | Current public totals used by the four HUD cells. |
 | `leaderboard` | array | Survivor leaderboard, already sorted by `rank`. The LP renders the first five entries. |
 | `rounds` | array | Optional. Recent rounds, newest first (see `rounds[]` below). |
@@ -53,7 +56,7 @@ missing or invalid, the LP falls back to its baked-in demo values.
 |---|---|---|
 | `jackpotSol` | number | Current jackpot pool, denominated in SOL. |
 | `round` | number | Current/latest completed round number displayed by the LP. |
-| `nextRoundAt` | string or `null` | ISO 8601 UTC time of the next round. In live mode this drives the countdown. It may be `null` in demo mode. |
+| `nextRoundAt` | string or `null` | ISO 8601 UTC time of the next round. Legacy countdown source — the LP prefers the top-level `roundEndsAt` epoch field and only falls back to this when `roundEndsAt` is absent. It may be `null` in demo mode. |
 | `survivors` | number | Number of wallets that qualified as survivors in the latest snapshot. |
 | `totalBurnedTokens` | number | Cumulative $STREAK actually burned, in whole-token units (not raw on-chain units). |
 | `totalBurnedSol` | number | Cumulative SOL allocated to or spent on buyback-and-burn. This is retained for auditability even though the HUD displays tokens burned. |
@@ -110,3 +113,7 @@ of Fame" section. Omit or leave empty until the first draw.
    mint and live engine state.
 5. Keep `source` specific enough that a reader can trace the snapshot back to
    the corresponding published round report.
+6. When publishing live data, set `roundEndsAt` to the round's settlement
+   time + 600,000 ms (epoch milliseconds) and `mint` to the token mint, so
+   the LP's countdown, accruing estimate and price tiles light up. The LP
+   re-reads this file every 60 seconds; no page redeploy is needed.
