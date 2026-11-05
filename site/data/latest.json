@@ -1,20 +1,29 @@
 {
   "schemaVersion": 1,
   "demo": false,
-  "source": "Live Survivor Engine publisher (publish.mjs) — engine state + round 23 report, mint 8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump",
-  "generatedAt": "2026-11-05T05:27:44.890Z",
-  "roundEndsAt": 1793857064890,
+  "source": "Live Survivor Engine publisher (publish.mjs) — engine state + round 24 report, mint 8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump",
+  "generatedAt": "2026-11-05T05:37:45.342Z",
+  "roundEndsAt": 1793857665342,
   "mint": "8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump",
   "hud": {
     "jackpotSol": 0,
-    "round": 23,
-    "nextRoundAt": "2026-11-05T05:37:44.890Z",
+    "round": 24,
+    "nextRoundAt": "2026-11-05T05:47:45.342Z",
     "survivors": 0,
     "totalBurnedTokens": 0,
     "totalBurnedSol": 0
   },
   "leaderboard": [],
   "rounds": [
+    {
+      "round": 24,
+      "potSol": 0,
+      "burnedSol": 0,
+      "survivorsPaidSol": 0,
+      "jackpotSol": 0,
+      "survivorsCount": 0,
+      "draw": null
+    },
     {
       "round": 23,
       "potSol": 0,
@@ -89,15 +98,6 @@
     },
     {
       "round": 15,
-      "potSol": 0,
-      "burnedSol": 0,
-      "survivorsPaidSol": 0,
-      "jackpotSol": 0,
-      "survivorsCount": 0,
-      "draw": null
-    },
-    {
-      "round": 14,
       "potSol": 0,
       "burnedSol": 0,
       "survivorsPaidSol": 0,
