@@ -103,6 +103,26 @@
   .qa{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px}
   .qa h4{font-size:15px;margin-bottom:4px}
   .qa p{color:var(--dim);font-size:14px}
+  details.qa{padding:0}
+  details.qa summary{cursor:pointer;font-weight:700;font-size:15px;padding:16px 20px;list-style:none}
+  details.qa summary::-webkit-details-marker{display:none}
+  details.qa summary::after{content:"+";float:right;color:var(--green);font-weight:900}
+  details.qa[open] summary::after{content:"–"}
+  details.qa p{padding:0 20px 16px}
+  /* TIMELINE */
+  .timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .tstep{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 14px;text-align:center;position:relative}
+  .tstep .ic{font-size:26px;display:block;margin-bottom:6px}
+  .tstep .tn{font-size:11px;color:var(--green);font-weight:900;letter-spacing:2px}
+  .tstep h4{font-size:14.5px;margin:5px 0 4px}
+  .tstep p{color:var(--dim);font-size:12.5px;line-height:1.5}
+  .tstep:not(:last-child)::after{content:"▸";position:absolute;right:-11px;top:50%;transform:translateY(-50%);color:var(--green);font-weight:900;z-index:2}
+  /* HALL OF FAME */
+  .fame-card{display:flex;gap:18px;align-items:center;background:linear-gradient(120deg,rgba(255,210,63,.10),rgba(139,92,246,.08)),var(--panel);border:1px solid var(--gold);border-radius:14px;padding:20px 22px}
+  .fame-card img{width:72px;height:72px;border-radius:18px;object-fit:cover;border:2px solid var(--gold)}
+  .fame-card .amt{font-size:28px;font-weight:900;color:var(--gold)}
+  .fame-card .who{color:var(--dim);font-size:13.5px}
+  .fame-card .who b{color:var(--text)}
   footer{margin-top:64px;border-top:1px solid var(--line);padding:28px 0 40px;color:var(--dim);font-size:13px}
   .foot-in{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
   @media(max-width:760px){
@@ -110,6 +130,9 @@
     .cards,.rules{grid-template-columns:1fr}
     .bar-row{grid-template-columns:120px 1fr 52px}
     .nav-links{display:none}
+    .timeline{grid-template-columns:1fr}
+    .tstep:not(:last-child)::after{content:"▾";right:auto;left:50%;top:auto;bottom:-13px;transform:translateX(-50%)}
+    .fame-card{flex-direction:column;text-align:center}
   }
 </style>
 </head>
@@ -121,7 +144,7 @@
     STREAK <span class="tk mono" style="font-size:14px">$STREAK</span>
   </div>
   <div class="nav-links">
-    <a href="#how">How it works</a><a href="#split">The split</a><a href="#board">Leaderboard</a><a href="#rules">Rules</a><a href="#faq">FAQ</a>
+    <a href="#how">How it works</a><a href="#timeline">Timeline</a><a href="#split">The split</a><a href="#board">Leaderboard</a><a href="#rounds">Rounds</a><a href="#rules">Rules</a><a href="#verify">Verify</a><a href="#faq">FAQ</a>
   </div>
   <button class="btn" disabled title="Launches on pump.fun">Buy — CA soon</button>
 </div></nav>
@@ -161,6 +184,18 @@
   </div>
 </section>
 
+<section id="timeline">
+  <h2>ONE ROUND, <span class="g">STEP BY STEP</span></h2>
+  <p class="lead">Every 10 minutes the engine runs the same five steps. No discretion, no manual trigger — and the last step leaves a public paper trail.</p>
+  <div class="timeline">
+    <div class="tstep"><span class="ic">💰</span><div class="tn">STEP 1</div><h4>Fees land</h4><p>Creator fees accrued since the last round are claimed. That SOL is the pot.</p></div>
+    <div class="tstep"><span class="ic">📸</span><div class="tn">STEP 2</div><h4>Snapshot</h4><p>Every holder is read on-chain — balances, movement, the works.</p></div>
+    <div class="tstep"><span class="ic">🔥</span><div class="tn">STEP 3</div><h4>Survivors &amp; streaks</h4><p>$20+ and no movement for 48h? You survive, streak +1. Moved? Streak resets.</p></div>
+    <div class="tstep"><span class="ic">✂️</span><div class="tn">STEP 4</div><h4>Split 50 / 30 / 20</h4><p>Half burns, 30% pays survivors, 20% feeds the jackpot. Draw if it's due.</p></div>
+    <div class="tstep"><span class="ic">🧾</span><div class="tn">STEP 5</div><h4>Report published</h4><p>The full round report is committed to the public GitHub repo. Check it yourself.</p></div>
+  </div>
+</section>
+
 <section id="split">
   <h2>EVERY ROUND, <span class="gold">THE FEES SPLIT</span></h2>
   <p class="lead">100% of creator fees flow to the engine wallet (fee sharing, locked at launch). The split never changes and every round is published.</p>
@@ -187,6 +222,33 @@
   </table>
 </section>
 
+<section id="rounds">
+  <h2>RECENT <span class="g">ROUNDS</span> <span class="demo-tag">DEMO DATA</span></h2>
+  <p class="lead">The latest completed rounds. Every round's full report — snapshot, weights, payout signatures — is committed to the public repository.</p>
+  <table>
+    <thead><tr><th>ROUND</th><th>POT</th><th>BURNED</th><th>TO SURVIVORS</th><th>TO JACKPOT</th><th>SURVIVORS</th><th>DRAW</th></tr></thead>
+    <tbody id="roundsBody">
+    <tr><td class="mono">#3</td><td>0.500 SOL</td><td>0.250 SOL</td><td>0.150 SOL</td><td>0.100 SOL</td><td>22</td><td class="streak">czcd…Jnt2 won 0.300 SOL</td></tr>
+    <tr><td class="mono">#2</td><td>0.500 SOL</td><td>0.250 SOL</td><td>0.150 SOL</td><td>0.100 SOL</td><td>22</td><td>—</td></tr>
+    <tr><td class="mono">#1</td><td>0.500 SOL</td><td>0.250 SOL</td><td>0.150 SOL</td><td>0.100 SOL</td><td>22</td><td>—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="fame">
+  <h2>HALL OF <span class="gold">FAME</span> <span class="demo-tag">DEMO DATA</span></h2>
+  <p class="lead">Jackpot winners. One survivor, one draw, the whole pool — decided by √bag × streak and a blockhash anyone can recompute.</p>
+  <div id="fameList" style="display:grid;gap:14px">
+    <div class="fame-card">
+      <img src="./favicon.webp" alt="STREAK mascot" width="72" height="72">
+      <div>
+        <div class="amt mono">0.300 SOL</div>
+        <div class="who">Won by <b class="mono">czcd…Jnt2</b> · Round #3 draw · streak <b>3</b> · bag <b>$411</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="rules">
   <h2>THE <span class="g">RULES</span></h2>
   <p class="lead">Fixed before launch. The engine runs them exactly as written — no discretion, no exceptions.</p>
@@ -198,14 +260,24 @@
   </div>
 </section>
 
+<section id="verify">
+  <h2>VERIFY IT <span class="v">YOURSELF</span></h2>
+  <p class="lead">Don't trust this page. Everything it shows can be recomputed from public data — here is exactly how.</p>
+  <div class="cards">
+    <div class="card"><div class="num">CHECK 01</div><h3>Recompute the draw</h3><p>Every round report publishes the slot, the finalized blockhash, the full survivor weight list and a snapshot hash. The winner is SHA-256(blockhash ‖ round) mod total weight — redo the math and land on the same winner.</p><p style="margin-top:10px"><a href="https://github.com/vault0-cell/streak/tree/main/rounds" target="_blank" rel="noopener">Round reports →</a></p></div>
+    <div class="card"><div class="num">CHECK 02</div><h3>Check a payout tx</h3><p>Round reports list every payout with its transaction signature. Open any of them in a Solana explorer and confirm the amounts and recipients match the report — and this page.</p><p style="margin-top:10px"><a href="https://github.com/vault0-cell/streak/tree/main/rounds" target="_blank" rel="noopener">Find a signature →</a></p></div>
+    <div class="card"><div class="num">CHECK 03</div><h3>Read the code</h3><p>The rules on this page are the engine's rules: the exact code that computes snapshots, streaks, splits and draws is public, with unit tests. Parameter changes land as commits — visible, timestamped, announced in advance.</p><p style="margin-top:10px"><a href="https://github.com/vault0-cell/streak/tree/main/engine" target="_blank" rel="noopener">Engine source →</a></p></div>
+  </div>
+</section>
+
 <section id="faq">
   <h2><span class="gold">FAQ</span></h2>
   <div class="faq">
-    <div class="qa"><h4>Do I need to connect my wallet or claim anything?</h4><p>No. If your wallet qualifies at a round, SOL is sent to it. There is nothing to sign and no site to trust with your keys.</p></div>
-    <div class="qa"><h4>Where does the SOL come from?</h4><p>Trading fees. Every $STREAK trade on pump.fun pays a creator fee; fee sharing routes 100% of it to the engine. A round pays out only what trading actually brought in — nothing is promised up front, and quiet rounds pay little or nothing.</p></div>
-    <div class="qa"><h4>What happens if I sell a little?</h4><p>Any outbound movement resets your streak to 0 and you sit out 48 hours. SOL you already earned stays yours.</p></div>
-    <div class="qa"><h4>Can the rules or the split change?</h4><p>The fee-sharing setup is locked at launch. If the engine parameters ever change, the change is announced in advance and every past round stays published.</p></div>
-    <div class="qa"><h4>Is this affiliated with pump.fun?</h4><p>No. STREAK is an independent token that trades on pump.fun; the engine is run by the STREAK team.</p></div>
+    <details class="qa"><summary>Do I need to connect my wallet or claim anything?</summary><p>No. If your wallet qualifies at a round, SOL is sent to it. There is nothing to sign and no site to trust with your keys.</p></details>
+    <details class="qa"><summary>Where does the SOL come from?</summary><p>Trading fees. Every $STREAK trade on pump.fun pays a creator fee; fee sharing routes 100% of it to the engine. A round pays out only what trading actually brought in — nothing is promised up front, and quiet rounds pay little or nothing.</p></details>
+    <details class="qa"><summary>What happens if I sell a little?</summary><p>Any outbound movement resets your streak to 0 and you sit out 48 hours. SOL you already earned stays yours.</p></details>
+    <details class="qa"><summary>Can the rules or the split change?</summary><p>The fee-sharing setup is locked at launch. If the engine parameters ever change, the change is announced in advance and every past round stays published.</p></details>
+    <details class="qa"><summary>Is this affiliated with pump.fun?</summary><p>No. STREAK is an independent token that trades on pump.fun; the engine is run by the STREAK team.</p></details>
   </div>
 </section>
 
@@ -216,6 +288,7 @@
     <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="27" r="17" fill="none" stroke="#3dff7a" stroke-width="4"/><path d="M27 8 L15 28 h8 L19 42 L35 20 h-9 z" fill="#ffd23f"/><path d="M14 6 l4 5 6-6 6 6 4-5-2 8 H16 z" fill="#8b5cf6"/></svg>
     STREAK
   </div>
+  <img src="./favicon.webp" alt="" width="34" height="34" style="border-radius:9px;object-fit:cover">
   <span>Official CA and X are announced only through official channels — beware impersonators.</span>
   <span style="margin-left:auto">STREAK is a memecoin with a game attached. Not financial advice.</span>
 </div></footer>
@@ -242,6 +315,14 @@
         { rank: 3, walletDisplay: '9sWd…4kLp', streak: 3, bagUsd: 197, earnedSol: 0.034 },
         { rank: 4, walletDisplay: 'F2ha…77Qe', streak: 2, bagUsd: 640, earnedSol: 0.028 },
         { rank: 5, walletDisplay: '3mNv…Zx09', streak: 2, bagUsd: 88, earnedSol: 0.011 }
+      ],
+      rounds: [
+        { round: 3, potSol: 0.5, burnedSol: 0.25, survivorsPaidSol: 0.15, jackpotSol: 0.1, survivorsCount: 22, draw: { winnerDisplay: 'czcd…Jnt2', winnerStreak: 3, amountSol: 0.3 } },
+        { round: 2, potSol: 0.5, burnedSol: 0.25, survivorsPaidSol: 0.15, jackpotSol: 0.1, survivorsCount: 22, draw: null },
+        { round: 1, potSol: 0.5, burnedSol: 0.25, survivorsPaidSol: 0.15, jackpotSol: 0.1, survivorsCount: 22, draw: null }
+      ],
+      hallOfFame: [
+        { round: 3, walletDisplay: 'czcd…Jnt2', amountSol: 0.3, streak: 3, bagUsd: 411 }
       ]
     };
 
@@ -311,6 +392,90 @@
       });
     }
 
+    function sol(value) {
+      return number(value, 0).toFixed(3) + ' SOL';
+    }
+
+    function renderRounds(rounds) {
+      if (!Array.isArray(rounds) || rounds.length === 0) return;
+      var tbody = document.getElementById('roundsBody');
+      if (!tbody) return;
+      tbody.textContent = '';
+
+      rounds.slice(0, 5).forEach(function (entry) {
+        var row = document.createElement('tr');
+        var cells = [
+          '#' + number(entry.round, 0),
+          sol(entry.potSol),
+          sol(entry.burnedSol),
+          sol(entry.survivorsPaidSol),
+          sol(entry.jackpotSol),
+          String(number(entry.survivorsCount, 0))
+        ];
+        cells.forEach(function (text, index) {
+          var td = document.createElement('td');
+          if (index === 0) td.className = 'mono';
+          td.textContent = text;
+          row.appendChild(td);
+        });
+        var draw = document.createElement('td');
+        if (entry.draw) {
+          draw.className = 'streak';
+          var label = entry.draw.winnerDisplay ||
+            walletLabel({ wallet: entry.draw.winner });
+          draw.textContent = label + ' won ' + sol(entry.draw.amountSol);
+        } else {
+          draw.textContent = '—';
+        }
+        row.appendChild(draw);
+        tbody.appendChild(row);
+      });
+    }
+
+    function renderFame(entries) {
+      if (!Array.isArray(entries) || entries.length === 0) return;
+      var list = document.getElementById('fameList');
+      if (!list) return;
+      list.textContent = '';
+
+      entries.forEach(function (entry) {
+        var card = document.createElement('div');
+        card.className = 'fame-card';
+
+        var img = document.createElement('img');
+        img.src = './favicon.webp';
+        img.alt = 'STREAK mascot';
+        img.width = 72;
+        img.height = 72;
+        card.appendChild(img);
+
+        var body = document.createElement('div');
+        var amt = document.createElement('div');
+        amt.className = 'amt mono';
+        amt.textContent = sol(entry.amountSol);
+        body.appendChild(amt);
+
+        var who = document.createElement('div');
+        who.className = 'who';
+        who.appendChild(document.createTextNode('Won by '));
+        var wallet = document.createElement('b');
+        wallet.className = 'mono';
+        wallet.textContent = walletLabel(entry);
+        who.appendChild(wallet);
+        who.appendChild(document.createTextNode(
+          ' · Round #' + number(entry.round, 0) + ' draw · streak '));
+        var streak = document.createElement('b');
+        streak.textContent = number(entry.streak, 0);
+        who.appendChild(streak);
+        who.appendChild(document.createTextNode(' · bag $' +
+          trimNumber(number(entry.bagUsd, 0), 0)));
+        body.appendChild(who);
+
+        card.appendChild(body);
+        list.appendChild(card);
+      });
+    }
+
     function formatCountdown(milliseconds) {
       var totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000));
       var minutes = Math.floor(totalSeconds / 60);
@@ -365,6 +530,8 @@
       document.getElementById('totalBurned').innerHTML =
         trimNumber(number(data.hud.totalBurnedTokens, 0), 3) + ' <small>$STREAK</small>';
       renderLeaderboard(data.leaderboard);
+      renderRounds(data.rounds);
+      renderFame(data.hallOfFame);
       startClock({ demo: demo, hud: data.hud });
     }
 

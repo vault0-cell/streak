@@ -44,6 +44,8 @@ missing or invalid, the LP falls back to its baked-in demo values.
 | `generatedAt` | string | ISO 8601 UTC timestamp for when the snapshot was generated. |
 | `hud` | object | Current public totals used by the four HUD cells. |
 | `leaderboard` | array | Survivor leaderboard, already sorted by `rank`. The LP renders the first five entries. |
+| `rounds` | array | Optional. Recent rounds, newest first (see `rounds[]` below). |
+| `hallOfFame` | array | Optional. Jackpot winners (see `hallOfFame[]` below). |
 
 ### `hud`
 
@@ -55,6 +57,35 @@ missing or invalid, the LP falls back to its baked-in demo values.
 | `survivors` | number | Number of wallets that qualified as survivors in the latest snapshot. |
 | `totalBurnedTokens` | number | Cumulative $STREAK actually burned, in whole-token units (not raw on-chain units). |
 | `totalBurnedSol` | number | Cumulative SOL allocated to or spent on buyback-and-burn. This is retained for auditability even though the HUD displays tokens burned. |
+
+### `rounds[]` (optional, newest first)
+
+Recent completed rounds, newest first. The LP renders the first five in
+the "Recent rounds" table. Omit or leave empty pre-launch; the LP then
+keeps its baked-in demo rows.
+
+| Field | Type | Meaning |
+|---|---|---|
+| `round` | number | Round number. |
+| `potSol` | number | Total creator fees claimed for the round, in SOL. |
+| `burnedSol` | number | SOL allocated to buyback-and-burn that round. |
+| `survivorsPaidSol` | number | SOL paid to survivors that round (after any rollover rules). |
+| `jackpotSol` | number | SOL added to the jackpot pool that round. |
+| `survivorsCount` | number | Wallets that qualified as survivors that round. |
+| `draw` | object or `null` | `null` when no jackpot draw ran. Otherwise `{ winner, winnerDisplay, winnerStreak, amountSol }` with the same wallet conventions as `leaderboard[]`. |
+
+### `hallOfFame[]` (optional)
+
+Jackpot winners, in draw order. The LP renders every entry in the "Hall
+of Fame" section. Omit or leave empty until the first draw.
+
+| Field | Type | Meaning |
+|---|---|---|
+| `round` | number | Round in which the draw ran. |
+| `wallet` / `walletDisplay` | string | Winner wallet, same conventions as `leaderboard[]`. |
+| `amountSol` | number | Jackpot amount paid, in SOL. |
+| `streak` | number | Winner's streak at draw time. |
+| `bagUsd` | number | Winner's bag value in USD at draw time. |
 
 ### `leaderboard[]`
 
