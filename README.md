@@ -89,8 +89,9 @@ anyway.
 **Jackpot** — drawn every **144 rounds** (≈24h), or early once the pool
 reaches **1 SOL**. Every survivor is entered with weight
 **√balance × streak**: time in the game beats size of the bag. One winner
-takes the whole pool. The team seeds the opening pool at launch so the
-first draw is worth winning.
+takes the whole pool. There is no team seed: the pool starts at zero at
+launch and fills only from real fees, so the first draw pays out exactly
+what trading put in.
 
 A round pays only what trading actually brought in. Nothing is promised up
 front, and quiet rounds pay little or nothing.
