@@ -17,7 +17,7 @@ No staking. No claiming. No wallet connection. Hold, don't move, survive.
 > announced through the official links below — anything else is an
 > impersonator.
 
-**Token CA:** TBA · **X:** TBA · **Site:** TBA
+**Token CA:** TBA · **X:** TBA · **Site:** https://vault0-cell.github.io/streak/
 
 ---
 
@@ -120,7 +120,7 @@ This repo is the transparency layer. Don't trust — recompute.
 - **Token (pump.fun):** TBA
 - **Contract address:** TBA
 - **X:** TBA
-- **Site:** TBA
+- **Site:** https://vault0-cell.github.io/streak/
 
 ---
 
