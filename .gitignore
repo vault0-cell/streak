@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# logs
+*.log
+logs/
+
+# environment & secrets — never commit these
+.env
+.env.*
+*.key
+*.keypair
+*keypair*.json
+*secret*.json
+engine-keyfile*
+id.json
+
+# engine runtime state (round reports under rounds/ ARE committed;
+# local scratch state is not)
+engine/data/*/state.json.tmp
+*.tmp
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

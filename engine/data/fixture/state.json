@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "mint": "FixtureMint1111111111111111111111111111111",
+  "creator": "FixtureCreator11111111111111111111111111111",
+  "round": 3,
+  "lastRoundAt": 1793901200000,
+  "lastDrawRound": 3,
+  "jackpotPoolLamports": 0,
+  "totals": {
+    "claimedLamports": 1500000000,
+    "burnSolLamports": 750000000,
+    "burnTokensRaw": "0",
+    "survivorPaidLamports": 450000000,
+    "survivorCarriedLamports": 0,
+    "jackpotPaidLamports": 300000000
+  },
+  "wallets": {
+    "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "2360500000000",
+      "balanceUsd": 4721
+    },
+    "P97mRvcmcjKs15Rr5vGppcu7bq6zaV4JjDaxzWoxCcLc": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "1588500000000",
+      "balanceUsd": 3177
+    },
+    "wzLMGNttfdF7MdgtmVDKBWJDBfhDuosmfK9KPQpPzFBR": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "615500000000",
+      "balanceUsd": 1231
+    },
+    "sXuf2hKoCVCuLHWsLjaasoNcgNwV4jARWavssBes814u": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "2467000000000",
+      "balanceUsd": 4934
+    },
+    "oFAEYzeMaEsXWko8kCLEAhEN327myqbPhN5HdD1BmNWP": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "1188500000000",
+      "balanceUsd": 2377
+    },
+    "gQBP2eiAC4dHQsWbxY26gSipcJjKFNuAYcDUHv9NuT5y": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "692000000000",
+      "balanceUsd": 1384
+    },
+    "jinCsG17VSMYsZz9T2tDRNEQo9qeEiNR6VSpzjnMdBUR": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "1017000000000",
+      "balanceUsd": 2034
+    },
+    "tPEjRxBjn9cJAXW6sZeCpksKHoHrbH6yQCh5e2A9Z1KJ": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "90500000000",
+      "balanceUsd": 181
+    },
+    "ZVpav6a1eRKbBc4yCJ1C52Cvis4hzStx65GKwKdgPST2": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "1087000000000",
+      "balanceUsd": 2174
+    },
+    "891RZ56Fx298X8BkjNYFsvLbWpN6GT4mqAriiZiQQop1": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "163000000000",
+      "balanceUsd": 326
+    },
+    "cmGC1MSte7qGcAXqJaZ83JkMWzuDFtSd7XqvohNWmAxr": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "1874500000000",
+      "balanceUsd": 3749
+    },
+    "yuCcEW6irhDaiafeZWm5WQFxLDskVN6bCHnFmLk6NtSw": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "150000000000",
+      "balanceUsd": 300
+    },
+    "XgQYSmR1W8GD7fvBMmCyxtRZwqmVXPWncwNdQq3MS4DC": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "15000000000",
+      "balanceUsd": 30
+    },
+    "sS7sNUyZ7WWHHoejydwSdoUkojzeeiyRizR8wAvrDzfa": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "17500000000",
+      "balanceUsd": 35
+    },
+    "ZDuWXoXi3nhXfvZNwv23gdV8XDiyaQvQaUSoPgSEsNRq": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "20000000000",
+      "balanceUsd": 40
+    },
+    "1B4vTQVzHz7kSmeL9rj36PeV7HyZuSpaShUXs9oGt5kZ": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "22500000000",
+      "balanceUsd": 45
+    },
+    "R3LgyHshZxkzCJiRjNbo5g1K8MRKZW3WuvJsbZXSdARe": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "21500000000",
+      "balanceUsd": 43
+    },
+    "qeTLtvvE8U6P7G9NGJaBNWfeMExLyrKeo5zgvseonPc6": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "12500000000",
+      "balanceUsd": 25
+    },
+    "czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": 1793540000000,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "205500000000",
+      "balanceUsd": 411
+    },
+    "MTasVZCfm247AMen6wvdzsSDver9B2fqV2vzC74Ak2ts": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": 1793540000000,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "167000000000",
+      "balanceUsd": 334
+    },
+    "4bYEbMHnwyDUxCNhJHcGx9U8xWd6HY2z7xpEyVqLBRSt": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": 1793878400000,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "68500000000",
+      "balanceUsd": 137
+    },
+    "mpEAQv42Bick4dK3pH1At6mYBMMgfk9WpM8eAtrG4DHP": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": 1793878400000,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "159000000000",
+      "balanceUsd": 318
+    },
+    "cTwFhHiS5BFk4YruzwcEpaTrtybKugBtxi2MxYBPqftG": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": 1793878400000,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "65000000000",
+      "balanceUsd": 130
+    },
+    "THHSKSwY6wJ8eF2kwpfGRuu7vjhfGCH3ednegKC87NdT": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": 1793878400000,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "168500000000",
+      "balanceUsd": 337
+    },
+    "Z2RRstE5SWXd3E12JLStWTtuvBi9odk2X2r57keLRLSr": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "5500000000",
+      "balanceUsd": 11
+    },
+    "MC32xvzVJQz1YwjyvtHEBzvQJWPgip46L7k3oCEXZaJ8": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "9000000000",
+      "balanceUsd": 18
+    },
+    "WwMFPeMSv49djVfWgbq3pWfukJZm2TvTbMNhi8jTvK8d": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "6000000000",
+      "balanceUsd": 12
+    },
+    "Yz8z4M7TEdse1F6w9nrNEFAiiafu7pK2Q6TxqfcUztsJ": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 0,
+      "dustLamports": 0,
+      "balanceRaw": "7500000000",
+      "balanceUsd": 15
+    },
+    "px2HrBDM5ybnH5CWWJQ1yxiPW7KXjSJZCGK3FUtMS7yT": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "10000000000",
+      "balanceUsd": 20
+    },
+    "j6XeJc23iaQfowHFMxq7PCrBBpUQYvi4XNmXZxvZZTcw": {
+      "firstSeenAt": 1793900000000,
+      "lastSellAt": null,
+      "streak": 3,
+      "dustLamports": 0,
+      "balanceRaw": "10000000000",
+      "balanceUsd": 20
+    }
+  },
+  "winners": [
+    {
+      "round": 3,
+      "at": 1793901200000,
+      "wallet": "czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2",
+      "lamports": 300000000,
+      "blockhash": "FixtureBlockhashForDeterministicDraw1111111111",
+      "slot": 465500000
+    }
+  ]
+}

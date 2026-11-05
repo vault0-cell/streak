@@ -1,0 +1,113 @@
+// Survivor Engine — pure math. No I/O, no chain access. All money is integer
+// lamports; allocations use the largest-remainder method so parts ALWAYS sum
+// exactly to the whole (no lamports created or lost to rounding).
+import { createHash } from "node:crypto";
+
+export const sha256hex = (s) => createHash("sha256").update(s).digest("hex");
+
+// Split an integer pot by basis points. Largest remainder; ties broken by the
+// fixed key order [burn, survivor, jackpot] so results are deterministic.
+export function splitPot(potLamports, { burnBps, survivorBps, jackpotBps }) {
+  const parts = [
+    ["burn", burnBps],
+    ["survivor", survivorBps],
+    ["jackpot", jackpotBps],
+  ].map(([key, bps]) => {
+    const exact = (potLamports * bps) / 10_000;
+    return { key, floor: Math.floor(exact), frac: exact - Math.floor(exact) };
+  });
+  let rest = potLamports - parts.reduce((a, p) => a + p.floor, 0);
+  parts.sort((a, b) => b.frac - a.frac);
+  const out = {};
+  for (const p of parts) out[p.key] = p.floor;
+  for (const p of parts) {
+    if (rest <= 0) break;
+    out[p.key] += 1;
+    rest -= 1;
+  }
+  return out;
+}
+
+// Allocate an integer pool across weighted entries [{key, weight}].
+// Returns a Map key -> lamports. Sum of values === poolLamports (when at
+// least one weight is positive). Zero-weight entries receive 0.
+export function allocate(poolLamports, entries) {
+  const out = new Map(entries.map((e) => [e.key, 0]));
+  if (poolLamports <= 0 || entries.length === 0) return out;
+  const totalW = entries.reduce((a, e) => a + Math.max(0, e.weight), 0);
+  if (totalW <= 0) return out;
+  const rows = entries.map((e) => {
+    const w = Math.max(0, e.weight);
+    const exact = (poolLamports * w) / totalW;
+    return { key: e.key, floor: Math.floor(exact), frac: exact - Math.floor(exact) };
+  });
+  let rest = poolLamports - rows.reduce((a, r) => a + r.floor, 0);
+  const order = [...rows].sort((a, b) => b.frac - a.frac || (a.key < b.key ? -1 : 1));
+  const vals = new Map(rows.map((r) => [r.key, r.floor]));
+  for (const r of order) {
+    if (rest <= 0) break;
+    vals.set(r.key, vals.get(r.key) + 1);
+    rest -= 1;
+  }
+  for (const [k, v] of vals) out.set(k, v);
+  return out;
+}
+
+// CALL-style dust handling: a wallet is paid only once share + carried dust
+// reaches the threshold; otherwise the amount keeps accumulating as dust.
+// shares: Map wallet->lamports (this round), carried: Map wallet->lamports.
+// Returns { payable: Map, carried: Map } covering the union of wallets.
+export function applyDust(shares, carried, thresholdLamports) {
+  const payable = new Map();
+  const newCarried = new Map();
+  const wallets = new Set([...shares.keys(), ...carried.keys()]);
+  for (const w of wallets) {
+    const total = (shares.get(w) || 0) + (carried.get(w) || 0);
+    if (total >= thresholdLamports && total > 0) {
+      payable.set(w, total);
+      newCarried.set(w, 0);
+    } else {
+      if (total > 0) newCarried.set(w, total);
+      else newCarried.set(w, 0);
+    }
+  }
+  return { payable, carried: newCarried };
+}
+
+// Chunk a payable Map into payout batches of at most maxPerTx recipients.
+export function batchPlan(payable, maxPerTx = 18) {
+  const entries = [...payable.entries()]
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+    .map(([wallet, lamports]) => ({ wallet, lamports }));
+  const batches = [];
+  for (let i = 0; i < entries.length; i += maxPerTx) batches.push(entries.slice(i, i + maxPerTx));
+  return batches;
+}
+
+// Deterministic weighted pick using a blockhash as the public randomness
+// source. Anyone can recompute the winner from (blockhash, round, weights).
+// Weights are scaled to integers (x1e6) before the modulo walk.
+export function jackpotPick(entries, blockhash, roundNo) {
+  const live = entries.filter((e) => e.weight > 0);
+  if (live.length === 0) return null;
+  const scaled = live.map((e) => ({ key: e.key, w: Math.max(1, Math.round(e.weight * 1e6)) }));
+  const total = scaled.reduce((a, e) => a + e.w, 0);
+  const seed = sha256hex(`${blockhash}:${roundNo}`);
+  let r = Number(BigInt("0x" + seed) % BigInt(total));
+  for (const e of scaled) {
+    if (r < e.w) return e.key;
+    r -= e.w;
+  }
+  return scaled[scaled.length - 1].key;
+}
+
+// Pure streak transition. prev: Map wallet -> streak. survivors: Set of
+// wallets that ARE survivors this round. Any tracked wallet that is not a
+// survivor this round drops to 0 (sold, fell below the minimum, or emptied).
+export function computeStreaks(prev, survivors) {
+  const next = new Map();
+  for (const w of survivors) next.set(w, (prev.get(w) || 0) + 1);
+  for (const w of prev.keys()) if (!next.has(w)) next.set(w, 0);
+  return next;
+}

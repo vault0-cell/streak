@@ -1,0 +1,197 @@
+{
+  "mint": "FixtureMint1111111111111111111111111111111",
+  "creator": "FixtureCreator11111111111111111111111111111",
+  "potSol": 0.5,
+  "tokenUsd": 0.002,
+  "solUsd": 95,
+  "decimals": 6,
+  "blockhash": "FixtureBlockhashForDeterministicDraw1111111111",
+  "slot": 465500000,
+  "t0": 1793900000000,
+  "groups": {
+    "survivor": 12,
+    "smallSurvivor": 6,
+    "oldSeller": 2,
+    "recentSeller": 4,
+    "belowMin": 4,
+    "dust": 2
+  },
+  "holders": [
+    {
+      "owner": "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP",
+      "balanceRaw": "2360500000000",
+      "balanceUi": 2360500
+    },
+    {
+      "owner": "P97mRvcmcjKs15Rr5vGppcu7bq6zaV4JjDaxzWoxCcLc",
+      "balanceRaw": "1588500000000",
+      "balanceUi": 1588500
+    },
+    {
+      "owner": "wzLMGNttfdF7MdgtmVDKBWJDBfhDuosmfK9KPQpPzFBR",
+      "balanceRaw": "615500000000",
+      "balanceUi": 615500
+    },
+    {
+      "owner": "sXuf2hKoCVCuLHWsLjaasoNcgNwV4jARWavssBes814u",
+      "balanceRaw": "2467000000000",
+      "balanceUi": 2467000
+    },
+    {
+      "owner": "oFAEYzeMaEsXWko8kCLEAhEN327myqbPhN5HdD1BmNWP",
+      "balanceRaw": "1188500000000",
+      "balanceUi": 1188500
+    },
+    {
+      "owner": "gQBP2eiAC4dHQsWbxY26gSipcJjKFNuAYcDUHv9NuT5y",
+      "balanceRaw": "692000000000",
+      "balanceUi": 692000
+    },
+    {
+      "owner": "jinCsG17VSMYsZz9T2tDRNEQo9qeEiNR6VSpzjnMdBUR",
+      "balanceRaw": "1017000000000",
+      "balanceUi": 1017000
+    },
+    {
+      "owner": "tPEjRxBjn9cJAXW6sZeCpksKHoHrbH6yQCh5e2A9Z1KJ",
+      "balanceRaw": "90500000000",
+      "balanceUi": 90500
+    },
+    {
+      "owner": "ZVpav6a1eRKbBc4yCJ1C52Cvis4hzStx65GKwKdgPST2",
+      "balanceRaw": "1087000000000",
+      "balanceUi": 1087000
+    },
+    {
+      "owner": "891RZ56Fx298X8BkjNYFsvLbWpN6GT4mqAriiZiQQop1",
+      "balanceRaw": "163000000000",
+      "balanceUi": 163000
+    },
+    {
+      "owner": "cmGC1MSte7qGcAXqJaZ83JkMWzuDFtSd7XqvohNWmAxr",
+      "balanceRaw": "1874500000000",
+      "balanceUi": 1874500
+    },
+    {
+      "owner": "yuCcEW6irhDaiafeZWm5WQFxLDskVN6bCHnFmLk6NtSw",
+      "balanceRaw": "150000000000",
+      "balanceUi": 150000
+    },
+    {
+      "owner": "XgQYSmR1W8GD7fvBMmCyxtRZwqmVXPWncwNdQq3MS4DC",
+      "balanceRaw": "15000000000",
+      "balanceUi": 15000
+    },
+    {
+      "owner": "sS7sNUyZ7WWHHoejydwSdoUkojzeeiyRizR8wAvrDzfa",
+      "balanceRaw": "17500000000",
+      "balanceUi": 17500
+    },
+    {
+      "owner": "ZDuWXoXi3nhXfvZNwv23gdV8XDiyaQvQaUSoPgSEsNRq",
+      "balanceRaw": "20000000000",
+      "balanceUi": 20000
+    },
+    {
+      "owner": "1B4vTQVzHz7kSmeL9rj36PeV7HyZuSpaShUXs9oGt5kZ",
+      "balanceRaw": "22500000000",
+      "balanceUi": 22500
+    },
+    {
+      "owner": "R3LgyHshZxkzCJiRjNbo5g1K8MRKZW3WuvJsbZXSdARe",
+      "balanceRaw": "21500000000",
+      "balanceUi": 21500
+    },
+    {
+      "owner": "qeTLtvvE8U6P7G9NGJaBNWfeMExLyrKeo5zgvseonPc6",
+      "balanceRaw": "12500000000",
+      "balanceUi": 12500
+    },
+    {
+      "owner": "czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2",
+      "balanceRaw": "205500000000",
+      "balanceUi": 205500
+    },
+    {
+      "owner": "MTasVZCfm247AMen6wvdzsSDver9B2fqV2vzC74Ak2ts",
+      "balanceRaw": "167000000000",
+      "balanceUi": 167000
+    },
+    {
+      "owner": "4bYEbMHnwyDUxCNhJHcGx9U8xWd6HY2z7xpEyVqLBRSt",
+      "balanceRaw": "68500000000",
+      "balanceUi": 68500
+    },
+    {
+      "owner": "mpEAQv42Bick4dK3pH1At6mYBMMgfk9WpM8eAtrG4DHP",
+      "balanceRaw": "159000000000",
+      "balanceUi": 159000
+    },
+    {
+      "owner": "cTwFhHiS5BFk4YruzwcEpaTrtybKugBtxi2MxYBPqftG",
+      "balanceRaw": "65000000000",
+      "balanceUi": 65000
+    },
+    {
+      "owner": "THHSKSwY6wJ8eF2kwpfGRuu7vjhfGCH3ednegKC87NdT",
+      "balanceRaw": "168500000000",
+      "balanceUi": 168500
+    },
+    {
+      "owner": "Z2RRstE5SWXd3E12JLStWTtuvBi9odk2X2r57keLRLSr",
+      "balanceRaw": "5500000000",
+      "balanceUi": 5500
+    },
+    {
+      "owner": "MC32xvzVJQz1YwjyvtHEBzvQJWPgip46L7k3oCEXZaJ8",
+      "balanceRaw": "9000000000",
+      "balanceUi": 9000
+    },
+    {
+      "owner": "WwMFPeMSv49djVfWgbq3pWfukJZm2TvTbMNhi8jTvK8d",
+      "balanceRaw": "6000000000",
+      "balanceUi": 6000
+    },
+    {
+      "owner": "Yz8z4M7TEdse1F6w9nrNEFAiiafu7pK2Q6TxqfcUztsJ",
+      "balanceRaw": "7500000000",
+      "balanceUi": 7500
+    },
+    {
+      "owner": "px2HrBDM5ybnH5CWWJQ1yxiPW7KXjSJZCGK3FUtMS7yT",
+      "balanceRaw": "10000000000",
+      "balanceUi": 10000
+    },
+    {
+      "owner": "j6XeJc23iaQfowHFMxq7PCrBBpUQYvi4XNmXZxvZZTcw",
+      "balanceRaw": "10000000000",
+      "balanceUi": 10000
+    }
+  ],
+  "sells": [
+    {
+      "wallet": "czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2",
+      "atMs": 1793540000000
+    },
+    {
+      "wallet": "MTasVZCfm247AMen6wvdzsSDver9B2fqV2vzC74Ak2ts",
+      "atMs": 1793540000000
+    },
+    {
+      "wallet": "4bYEbMHnwyDUxCNhJHcGx9U8xWd6HY2z7xpEyVqLBRSt",
+      "atMs": 1793878400000
+    },
+    {
+      "wallet": "mpEAQv42Bick4dK3pH1At6mYBMMgfk9WpM8eAtrG4DHP",
+      "atMs": 1793878400000
+    },
+    {
+      "wallet": "cTwFhHiS5BFk4YruzwcEpaTrtybKugBtxi2MxYBPqftG",
+      "atMs": 1793878400000
+    },
+    {
+      "wallet": "THHSKSwY6wJ8eF2kwpfGRuu7vjhfGCH3ednegKC87NdT",
+      "atMs": 1793878400000
+    }
+  ]
+}
