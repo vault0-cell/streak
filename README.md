@@ -13,6 +13,8 @@
   <img src="https://img.shields.io/badge/Engine-simulation--live-3dff7a" alt="Engine: simulation-live">
 </p>
 
+<p align="center"><a href="https://vault0-cell.github.io/streak/streak-hype.mp4">▶ Watch the 12s teaser</a></p>
+
 ---
 
 STREAK is a Solana memecoin whose only product is a game engine. Every trade
