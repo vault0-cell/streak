@@ -1,1 +1,29 @@
-{"demo":true,"generatedAt":"2026-11-05T17:53:20.000Z","hallOfFame":[{"amountSol":0.3,"bagUsd":411,"round":3,"streak":3,"wallet":"czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2","walletDisplay":"czcd…Jnt2"}],"hud":{"jackpotSol":0.006788347,"nextRoundAt":null,"round":1,"survivors":22,"totalBurnedSol":0.75,"totalBurnedTokens":0},"leaderboard":[{"bagUsd":411,"earnedSol":0.315163899,"rank":1,"streak":3,"wallet":"czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2","walletDisplay":"czcd…Jnt2"},{"bagUsd":4934,"earnedSol":0.052539933,"rank":2,"streak":3,"wallet":"sXuf2hKoCVCuLHWsLjaasoNcgNwV4jARWavssBes814u","walletDisplay":"sXuf…814u"},{"bagUsd":4721,"earnedSol":0.051393351,"rank":3,"streak":3,"wallet":"WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP","walletDisplay":"WZN…MLZP"},{"bagUsd":3749,"earnedSol":0.045798123,"rank":4,"streak":3,"wallet":"cmGC1MSte7qGcAXqJaZ83JkMWzuDFtSd7XqvohNWmAxr","walletDisplay":"cmGC…mAxr"},{"bagUsd":3177,"earnedSol":0.042159801,"rank":5,"streak":3,"wallet":"P97mRvcmcjKs15Rr5vGppcu7bq6zaV4JjDaxzWoxCcLc","walletDisplay":"P97m…CcLc"}],"roundEndsAt":1793901800000,"rounds":[{"burnedSol":0.25,"draw":{"amountSol":0.3,"winner":"czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2","winnerDisplay":"czcd…Jnt2","winnerStreak":3},"jackpotSol":0.1,"potSol":0.5,"round":3,"survivorsCount":22,"survivorsPaidSol":0.15},{"burnedSol":0.25,"draw":null,"jackpotSol":0.1,"potSol":0.5,"round":2,"survivorsCount":22,"survivorsPaidSol":0.15},{"burnedSol":0.25,"draw":null,"jackpotSol":0.1,"potSol":0.5,"round":1,"survivorsCount":22,"survivorsPaidSol":0.15}],"schemaVersion":1,"source":"Demo seed assembled from Survivor Engine simulation outputs. Fixture rounds 1-3 supply the survivor count, leaderboard, recent rounds, and cumulative buyback allocation; round 3's fixture draw supplies the hall-of-fame entry; the V2 simulation supplies the round-1 jackpot figure. No live token data is represented."}
+{
+  "schemaVersion": 1,
+  "demo": false,
+  "source": "Live Survivor Engine publisher (publish.mjs) — engine state + round 1 report, mint 8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump",
+  "generatedAt": "2026-11-05T01:46:44.765Z",
+  "roundEndsAt": 1793843804765,
+  "mint": "8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump",
+  "hud": {
+    "jackpotSol": 0,
+    "round": 1,
+    "nextRoundAt": "2026-11-05T01:56:44.765Z",
+    "survivors": 0,
+    "totalBurnedTokens": 0,
+    "totalBurnedSol": 0
+  },
+  "leaderboard": [],
+  "rounds": [
+    {
+      "round": 1,
+      "potSol": 0,
+      "burnedSol": 0,
+      "survivorsPaidSol": 0,
+      "jackpotSol": 0,
+      "survivorsCount": 0,
+      "draw": null
+    }
+  ],
+  "hallOfFame": []
+}
