@@ -5,6 +5,7 @@
 - Pot: **0.5 SOL** (fixture)
 - Split: burn 0.25 SOL · survivors 0.15 SOL · jackpot 0.1 SOL
 - Holders (non-infra): 30 · Survivors: 22
+- Buy Boost: no boosted wallets this round (rule: swap buys >= $5 inside the round window; transfer-ins never count)
 - Buyback: no quote — fixture round — no quote fetched
 - Survivor payouts: 22 wallet(s), 0.15 SOL in 2 batch(es) of <= 18
 - Jackpot pool after round: **0.0 SOL** — DRAWN: winner czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2 won 0.3 SOL (blockhash FixtureBlockhashForDeterministicDraw1111111111)
@@ -33,6 +34,9 @@
 - MTasVZCfm247AMen6wvdzsSDver9B2fqV2vzC74Ak2ts — 167000 tokens ($334.00), streak 3, share 0.004556611 SOL, payable 0.004556611 SOL, dust 0.0 SOL
 - px2HrBDM5ybnH5CWWJQ1yxiPW7KXjSJZCGK3FUtMS7yT — 10000 tokens ($20.00), streak 3, share 0.001115023 SOL, payable 0.001115023 SOL, dust 0.0 SOL
 - j6XeJc23iaQfowHFMxq7PCrBBpUQYvi4XNmXZxvZZTcw — 10000 tokens ($20.00), streak 3, share 0.001115023 SOL, payable 0.001115023 SOL, dust 0.0 SOL
+
+## Buy Boost
+- (no survivor reached the $5 buy threshold this round)
 
 ## Non-survivors
 - 4bYEbMHnwyDUxCNhJHcGx9U8xWd6HY2z7xpEyVqLBRSt — 68500 tokens — sold_in_window (last sell 2026-11-05T11:33:20.000Z)

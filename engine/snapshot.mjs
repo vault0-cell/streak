@@ -10,7 +10,9 @@ import {
 } from "./lib.mjs";
 
 // Canonical PumpSwap pool PDA: seeds ["pool", index u16 LE, creator, base, quote].
-function pumpSwapPoolPda(creator, mint) {
+// Exported for trades.mjs, which needs the pool as a vault owner when
+// classifying swap buys (Buy Boost detection).
+export function pumpSwapPoolPda(creator, mint) {
   try {
     const idx = Buffer.alloc(2); idx.writeUInt16LE(0);
     return PublicKey.findProgramAddressSync(

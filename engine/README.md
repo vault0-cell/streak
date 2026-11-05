@@ -3,8 +3,10 @@
 Automated creator-fee mechanism for a future pump.fun token: every round,
 newly accrued creator fees split **50% buyback & burn · 30% to survivors
 (√balance-weighted) · 20% to a progressive jackpot** drawn among survivors
-by √balance × streak. Full rules, parameters, security model and the
-go-live checklist: see **DESIGN.md**.
+by √balance × streak. A survivor who swap-buys **≥ $5 within a round**
+attacks at **×1.5 weight for that round only** (Buy Boost — DESIGN.md
+§3.6; transfer-ins never count). Full rules, parameters, security model
+and the go-live checklist: see **DESIGN.md**.
 
 > **This build cannot move money.** There is no signing, key-loading or
 > broadcasting code in this directory. If `config.json` sets `live: true`,
@@ -41,15 +43,18 @@ report incl. payout lists and the snapshot hash).
 ## Tests
 
 ```sh
-node --test test/math.test.mjs   # 8 tests: exact splits, sqrt allocation,
-                                 # dust carry, batching, draw, streaks
+node --test test/math.test.mjs test/boost.round.test.mjs
+# 17 tests: exact splits, sqrt allocation, dust carry, batching, draw,
+# streaks, plus Buy Boost (swap-vs-transfer classification, $5 threshold,
+# exact 1.5x shares, boost non-persistence, buy-then-sell disqualifies)
 ```
 
 ## Parameters (defaults)
 
 `roundMinutes 10` · splits `burn 5000 / survivor 3000 / jackpot 2000` bps ·
 `minHoldUsd 20` · `sellWindowHours 48` · dust threshold `0.0001 SOL` ·
-batch `≤18` · jackpot every `144` rounds or at `1 SOL` · creator excluded
+batch `≤18` · jackpot every `144` rounds or at `1 SOL` · Buy Boost
+`boostMultiplier 1.5` at `boostMinBuyUsd 5` · creator excluded
 from rewards. Override via `config.json` next to `config.mjs` (see
 DESIGN.md §4 for the full table and rationale).
 

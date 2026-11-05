@@ -9,7 +9,8 @@ every number on the public page can be recomputed from chain data.
 **Status: v0.1, simulation-first.** The code in `tools/survivor/` reads chain
 state and produces round reports, payout plans and a public page. It
 contains **no signing, key-handling or broadcasting code at all** — live
-execution is a separate future module (see the go-live checklist).
+execution is a separate future module (the go-live checklist lives in
+the launch runbook; §6 covers the wallet the live module will use).
 
 ---
 
@@ -23,6 +24,9 @@ minimum value and have not sold anything for 48 hours — weighted by
 to a progressive jackpot** that is periodically drawn among survivors
 weighted by **√balance × streak**, where a streak is the number of
 consecutive rounds survived. Selling anything resets the streak to zero.
+One offensive move exists: a survivor who *buys* at least $5 more during
+a round gets a ×1.5 weight for that round (the Buy Boost, §3.6) — the
+engine's only "attack" button, complementing the defensive streak game.
 The design pays for one behavior — *not selling* — and turns it into a
 public, escalating status game: burn counter, jackpot size, streak
 leaderboard, winner announcements.
@@ -55,13 +59,16 @@ pro-rata drip does not.
    The round report includes a SHA-256 snapshot hash of
    `owner:balanceRaw` lines so anyone can verify the input set.
 3. **Derive sell history.** Outbound movements since the last round (see
-   §3.2) update each wallet's `last_sell_at`.
+   §3.2) update each wallet's `last_sell_at`. Swap buys inside the round
+   window are derived at the same time, from the same sources plus the
+   on-chain vault-delta test, for the Buy Boost (§3.6).
 4. **Determine survivors & streaks** (§3.1, §3.3).
 5. **Split the pot** 50/30/20 with integer lamport math (largest-remainder;
    the three parts always sum exactly to the pot).
-6. **Survivor distribution.** √balance weights → lamport shares (largest
-   remainder, exact sum) → dust rule (§3.4) → payout plan batched at
-   ≤ 18 recipients per transaction (CALL pattern).
+6. **Survivor distribution.** √balance weights (× `boostMultiplier` for
+   boosted survivors, §3.6) → lamport shares (largest remainder, exact
+   sum) → dust rule (§3.4) → payout plan batched at ≤ 18 recipients per
+   transaction (CALL pattern).
 7. **Buyback.** The burn slice is quoted via Jupiter (quote only in sim).
    Measured 2026-11-05: Jupiter *does* route the LSCAN V2 bonding curve
    (0.006788347 SOL → 239,745.396 tokens quoted, ~1.11% price impact), so
@@ -117,7 +124,8 @@ never silently treated as "no sells". See §9 for coverage limits.
 ### 3.4 Splits, dust, batches
 - Split (basis points, configurable, must sum to 10 000):
   **burn 5000 · survivors 3000 · jackpot 2000**.
-- Survivor shares are proportional to **√(balance in tokens)**.
+- Survivor shares are proportional to **√(balance in tokens)**, times the
+  Buy Boost multiplier when the survivor swap-bought this round (§3.6).
 - **Dust rule (CALL pattern):** a wallet is paid only when
   `share + carried_dust ≥ 0.0001 SOL` (`dustThresholdLamports = 100_000`);
   otherwise the share accumulates as carried dust in state. Dust is never
@@ -126,11 +134,12 @@ never silently treated as "no sells". See §9 for coverage limits.
   largest first.
 
 ### 3.5 Jackpot
-- The pool accrues 20% of every pot, plus rollovers (§3.6).
+- The pool accrues 20% of every pot, plus rollovers (§3.7).
 - A draw happens when **either** `jackpotEveryRounds` (default **144** =
   ~24 h at 10-minute rounds) rounds have passed since the last draw,
   **or** the pool reaches `jackpotTriggerLamports` (default **1 SOL**).
-- Eligible: that round's survivors. Weight = **√(balance) × streak**
+- Eligible: that round's survivors. Weight = **√(balance) × streak ×
+  boost multiplier** (§3.6)
   (streak after this round's increment, so ≥ 1 for every survivor).
 - Winner selection: `r = SHA-256(blockhash || ":" || round) mod
   total_weight`, walking cumulative weights. One winner takes the pool.
@@ -142,7 +151,51 @@ never silently treated as "no sells". See §9 for coverage limits.
   large, swap in a VRF (e.g. Switchboard) — the pick function is isolated
   in `math.mjs` for exactly that reason.
 
-### 3.6 Rollovers and edge cases
+### 3.6 Buy Boost — the attack move
+Survival is defensive: you win by not selling. The Buy Boost is the one
+offensive action the engine rewards.
+
+- A **survivor** whose detected swap buys inside the current round
+  window total **≥ `boostMinBuyUsd`** (default **$5**) gets **weight ×
+  `boostMultiplier`** (default **1.5**) for **that round only** — in
+  both the survivor distribution (§3.4) and the jackpot draw (§3.5).
+- The boost is recomputed from scratch every round, from that round's
+  buys, and is **never stored in state**. No fresh buy next round, no
+  boost — it cannot be banked, carried or stacked across rounds.
+- **What counts as a buy:** an actual swap buy. Log sources contribute
+  `side: "buy"` swap rows; the on-chain fallback counts a balance
+  increase only when the same transaction also **drained the
+  bonding-curve / PumpSwap pool vault** (tokens left the vault as the
+  wallet's balance rose — the sell side of a swap). Buys routed through
+  aggregators still settle against the pool vault, so they are caught.
+  All sources are deduplicated by transaction signature, so a swap seen
+  twice counts once.
+- **A plain transfer-in never counts.** Receiving tokens from another
+  wallet leaves no vault trace, so shuffling a bag between your own
+  wallets cannot farm the boost — and the sending side independently
+  eats an outbound movement, which resets its streak and benches it
+  for 48 h (§3.2). Farming the boost with wash transfers is strictly
+  losing.
+- **Buying never resets a streak** (only outbound movements do), and
+  topping up is also how a survivor defends the $20 floor when the
+  price dips. But **buy-then-sell inside the same round disqualifies
+  as usual**: the sell is an outbound movement, the wallet is not a
+  survivor that round, and the boost — which only ever applies to
+  survivors — is void.
+- **Valuation & coverage:** log rows carry their own USD value;
+  on-chain buys are valued as tokens received × the round-close price.
+  Coverage mirrors sell detection (§3.2) — collector logs are a
+  smart-money sample, per-wallet logs cover tracked wallets, the
+  on-chain scan is authoritative but capped per wallet, with
+  truncation flagged in the round report. One extra limit: the
+  on-chain vault test only sees the canonical pump/PumpSwap vaults,
+  so post-graduation buys routed through other DEXs can be missed by
+  that source.
+- The round report carries a full Buy Boost audit section: the window,
+  every boosted wallet with its `boughtUsd`, every detected buy, and
+  the coverage record.
+
+### 3.7 Rollovers and edge cases
 - **No survivors in a round:** the 30% survivor slice rolls into the
   jackpot (it is not burned and never goes to the team). The burn and
   jackpot slices proceed normally.
@@ -156,7 +209,7 @@ never silently treated as "no sells". See §9 for coverage limits.
 - **Rounding:** all splits/allocations use largest-remainder integer math;
   parts sum exactly to the whole. Zero lamports are created or lost.
 
-### 3.7 What the engine never does
+### 3.8 What the engine never does
 - It never holds user funds and never needs anyone's keys. The only key it
   will ever use is its own engine wallet (§6).
 - It never promises a yield. Every round pays out only what that round's
@@ -184,6 +237,9 @@ never silently treated as "no sells". See §9 for coverage limits.
 | `sweepCapLamports` | 2 000 000 000 | Live mode: sweep engine balance above 2 SOL to the cold wallet (§6). |
 | `excludeCreator` | true | The creator/dev wallet never earns survivor rewards (self-dealing optics). |
 | `sellScanMaxSignatures` | 300 | Per-token-account cap for the on-chain sell scan; truncation is flagged. |
+| `boostMinBuyUsd` | 5 | Minimum in-window swap-buy value that triggers the Buy Boost (§3.6). Reachable in a dip, high enough that dust buys are pointless. |
+| `boostMultiplier` | 1.5 | Weight multiplier for a boosted survivor, for that round only — distribution and jackpot (§3.6). |
+| `onChainBuyScan` | true | Per-holder ATA scan over the round window for swap-buy detection (vault-delta test); shares the sell scan's signature cap. |
 
 ---
 
@@ -192,8 +248,108 @@ never silently treated as "no sells". See §9 for coverage limits.
 | File | Role |
 |---|---|
 | `config.mjs` | Defaults + `config.json` overrides; the `live:false` hard gate lives here and in `round.mjs`. |
-| `math.mjs` | Pure math: `splitPot`, `allocate`, `applyDust`, `batchPlan`, `jackpotPick`, `computeStreaks`. Unit-tested (`test/math.test.mjs`, 8 tests). |
+| `math.mjs` | Pure math: `splitPot`, `allocate`, `applyDust`, `batchPlan`, `jackpotPick`, `computeStreaks`, plus the Buy Boost primitives `isSwapBuy` / `boostInfo`. Unit-tested (`test/math.test.mjs` + `test/boost.round.test.mjs`, 17 tests). |
 | `lib.mjs` | Read-only chain/price helpers: solbot RPC router (fallback: feelock RPC), Jupiter prices + quotes, blockhash. |
 | `snapshot.mjs` | Holder snapshot across both token programs, infra exclusions. |
-| `trades
-...[truncated 9195 chars]
+| `trades.mjs` | Sell derivation (collector logs, tracked-wallet logs, on-chain ATA scan) and Buy Boost detection (log swap-buys + on-chain vault-delta test, signature-deduplicated). |
+| `state.mjs` | Per-token `state.json` persistence: streaks, carried dust, jackpot pool, totals, winners. The boost is deliberately NOT stored — it is per-round only. |
+| `round.mjs` | One round end-to-end (simulation): snapshot → sells/buys → survivors & streaks → split → distribution → buyback quote → jackpot → JSON + Markdown reports incl. the Buy Boost audit section. Refuses to run when `live: true`. |
+| `page.mjs` | Static public page rendered from a data dir (jackpot pool, totals, streak leaderboard, round history). |
+---
+
+## 6. Engine-wallet security model
+
+The engine's entire fund exposure is designed to be small, bounded and
+boring:
+
+- **Created by the user, at launch — not before.** The engine wallet does
+  not exist during development or simulation. The user creates it as part
+  of the launch procedure. The engine contains **no signing paths at all**
+  in simulation mode, and live mode is hard-gated (`live: false` in
+  `config.mjs`; `round.mjs` refuses to run when `live: true`). A future
+  live executor is a separate module, and its key is never part of this
+  codebase.
+- **It only ever holds fee income.** The wallet receives the creator-fee
+  stream (via fee sharing) plus a **0.5 SOL operating float**
+  (`engineFloatLamports`) for transaction fees. No user funds, no
+  deposits, no treasury.
+- **Sweeps cap the standing balance.** Each round, any balance above
+  **2 SOL** (`sweepCapLamports`) is swept to a cold wallet. The jackpot
+  trigger (`jackpotTriggerLamports`, 1 SOL) doubles as an exposure cap:
+  the pool is paid out before it can grow large.
+- **The creator wallet is never hot.** It stays separate from the engine
+  wallet, is excluded from survivor rewards (`excludeCreator`), and the
+  engine never transacts from it.
+- **Blast radius.** If the server were compromised, the maximum loss is
+  what sits in the engine wallet at that moment: un-swept fees + the
+  0.5 SOL float + the accrued jackpot pool — by construction, a few SOL
+  at most. Everything already swept, burned or paid out is unreachable.
+- **One-way configuration.** pump.fun's fee-sharing setup is finalized
+  at token creation and cannot be re-pointed afterwards. The sharing
+  config must therefore be set **once, correctly, at creation** — the
+  engine wallet as fee recipient — and verified before the token is
+  announced. (For the other one-way trap at creation time, see §8.)
+
+---
+
+## 8. Why not pump.fun's native Holder Rewards?
+
+pump.fun ships a native alternative. Verified 2026-11-05 against the
+official public docs (`pump-public-docs/docs/HOLDER_REWARDS_README.md`):
+
+- A coin can be created as a **holder-rewards coin** via the `create_v2`
+  argument `is_holder_reward` (announced 2026-09-12; it replaced
+  Cashback for new launches).
+- On such a coin the creator fee never reaches the creator: it accrues
+  to a **pump.fun-controlled vault** (the program records a pump.fun
+  address as creator) and is auto-distributed **pro-rata, several times
+  per hour, in the quote asset**, to holders of ≥ ~$20. The creator has
+  nothing to claim and nothing to configure.
+- It is **one-way**: a holder-rewards coin can never revert to a regular
+  coin, and a regular coin converts only through a gated CTO
+  application.
+- It **cannot be combined** with fee sharing or a creator reward
+  address — the native distribution takes the entire fee stream.
+
+The choice is therefore binary. Native Holder Rewards is zero-operations
+but is a flat, linear pro-rata drip: no √ weighting, no streaks, no
+burn, no jackpot, no Buy Boost. The Survivor Engine needs the raw fee
+stream, so **STREAK must launch as a regular creator-fee coin with fee
+sharing pointing at the engine wallet** (§6), and `is_holder_reward`
+must stay off at creation — turning it on permanently removes the
+engine's only fuel. Native Holder Rewards and the Survivor Engine are
+mutually exclusive on one fee stream.
+
+---
+
+## 9. Data coverage & limitations
+
+Eligibility is only as good as the engine's view of who sold and who
+bought. The sources, honestly graded:
+
+- **Collector swap logs are a sample.** solbot's collector records
+  smart-money flow, not every trade (LSCAN V1/V2 never appeared in it at
+  all — 0 rows). Absence from the logs proves nothing.
+- **Per-wallet logs cover tracked wallets only.** Useful — they are how
+  the V2 creator's full exit was confirmed — but not a census.
+- **The authoritative source is the on-chain per-holder ATA scan**: each
+  holder's token-account signatures, newest first, **capped at 300
+  signatures per account per round** (`sellScanMaxSignatures`). When the
+  cap is hit, that wallet's record is flagged as truncated in the round
+  report — a truncated record is **never** silently read as "no sells"
+  (or "no buys"). For tokens with many holders this scan is the main
+  RPC cost driver.
+- **Fees are per-creator, not per-token.** Claimable fees sit in one
+  shared creator vault across all of a creator's tokens, plus a separate
+  PumpSwap vault after graduation. The engine therefore assumes **one
+  mechanism token per creator wallet** (§2, step 1); running two would
+  mix their fee streams.
+- **Buy detection has one blind spot.** The on-chain test for the Buy
+  Boost is a vault-delta check against the canonical pump bonding-curve
+  and PumpSwap pool vaults, so post-graduation buys routed through other
+  DEXs can be missed by that source (the log sources may still catch
+  them). On-chain-detected buys are valued at the round-close price, so
+  their USD size is approximate.
+- **Prices can fail.** Prices come from Jupiter lite with a DexScreener
+  fallback. If both fail, the round **fails closed** — nobody qualifies
+  and the report says so (§3.7) — rather than guessing USD values.

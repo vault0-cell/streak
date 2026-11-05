@@ -193,5 +193,12 @@
       "wallet": "THHSKSwY6wJ8eF2kwpfGRuu7vjhfGCH3ednegKC87NdT",
       "atMs": 1793878400000
     }
+  ],
+  "buys": [
+    {
+      "wallet": "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP",
+      "atMs": 1793900300000,
+      "usd": 40
+    }
   ]
 }

@@ -5,6 +5,7 @@
 //   - 4 recent sellers (sold 6h before T0 -> NOT survivors)
 //   - 4 below the $20 minimum (NOT survivors)
 //   - 2 dust-sized survivors whose shares stay under the payout threshold
+//   - 1 of the survivors swap-buys $40 during round 2 (Buy Boost demo)
 // Token price $0.002, SOL $95. Pot 0.5 SOL per round.
 import fs from "node:fs";
 
@@ -31,6 +32,11 @@ for (let i = 0; i < 4; i++) { holders.push(mk(3 + Math.floor(rnd() * 16))); grou
 // Dust survivors: exactly at the $20 floor with tiny sqrt weight vs whales.
 for (let i = 0; i < 2; i++) { holders.push(mk(20)); groups.dust++; }
 
+// Buy Boost demo: the first (largest-group) survivor swap-buys $40 five
+// minutes into round 2 (rounds run at T0, T0+600s, T0+1200s), so round 2
+// shows it boosted x1.5 while rounds 1 and 3 show it unboosted.
+const buys = [{ wallet: holders[0].owner, atMs: T0 + 300_000, usd: 40 }];
+
 const fixture = {
   mint: "FixtureMint1111111111111111111111111111111",
   creator: "FixtureCreator11111111111111111111111111111",
@@ -44,7 +50,8 @@ const fixture = {
   groups,
   holders,
   sells,
+  buys,
 };
 fs.writeFileSync(new URL("./fixture.json", import.meta.url), JSON.stringify(fixture, null, 2));
-console.log(`fixture: ${holders.length} holders, ${sells.length} sells, groups=${JSON.stringify(groups)}`);
+console.log(`fixture: ${holders.length} holders, ${sells.length} sells, ${buys.length} buys (boost demo: ${buys[0].wallet} buys $${buys[0].usd} in round 2), groups=${JSON.stringify(groups)}`);
 console.log(`expected survivors at T0: ${groups.survivor + groups.smallSurvivor + groups.oldSeller + groups.dust}`);

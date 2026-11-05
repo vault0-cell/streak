@@ -1,7 +1,7 @@
 // Survivor Engine — math unit tests. Run: node --test test/math.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { splitPot, allocate, applyDust, batchPlan, jackpotPick, computeStreaks } from "../math.mjs";
+import { splitPot, allocate, applyDust, batchPlan, jackpotPick, computeStreaks, isSwapBuy, boostInfo } from "../math.mjs";
 
 const CFG = { burnBps: 5000, survivorBps: 3000, jackpotBps: 2000 };
 const sum = (xs) => xs.reduce((a, b) => a + b, 0);
@@ -92,6 +92,50 @@ test("computeStreaks: +1 for survivors, reset to 0 on any miss (incl. a sell)", 
   // b qualifies again -> restarts at 1
   prev = computeStreaks(prev, new Set(["a", "b"]));
   assert.deepEqual([prev.get("a"), prev.get("b")], [4, 1]);
+});
+
+test("isSwapBuy: only a vault-draining inflow is a buy (transfer-ins never count)", () => {
+  // swap buy: wallet +1000 tokens, curve/pool vault -1000 tokens
+  assert.equal(isSwapBuy(1000n, -1000n), true);
+  assert.equal(isSwapBuy("1000", "-1000"), true); // string deltas work too
+  // plain transfer-in: wallet +1000, vault unmoved (sender was another wallet)
+  assert.equal(isSwapBuy(1000n, 0n), false);
+  // inflow alongside a vault INCREASE (e.g. someone else sold into the pool)
+  assert.equal(isSwapBuy(1000n, 500n), false);
+  // a sell (wallet balance decreased) is never a buy
+  assert.equal(isSwapBuy(-1000n, 1000n), false);
+  assert.equal(isSwapBuy(0n, -1000n), false);
+});
+
+test("boostInfo: >= $5 of swap buys boosts at x1.5; $4.99 does not", () => {
+  const cfg = { boostMinBuyUsd: 5, boostMultiplier: 1.5 };
+  assert.deepEqual(boostInfo(25, cfg), { boosted: true, multiplier: 1.5 });
+  assert.deepEqual(boostInfo(5, cfg), { boosted: true, multiplier: 1.5 }); // threshold is inclusive
+  assert.deepEqual(boostInfo(4.99, cfg), { boosted: false, multiplier: 1 });
+  assert.deepEqual(boostInfo(0, cfg), { boosted: false, multiplier: 1 });
+});
+
+test("buy boost: a boosted survivor's share is exactly 1.5x an identical unboosted survivor", () => {
+  const cfg = { boostMinBuyUsd: 5, boostMultiplier: 1.5 };
+  // two wallets, same balance (sqrt weight 10). One bought $25 this round.
+  const mk = (boughtUsd) => {
+    const bi = boostInfo(boughtUsd, cfg);
+    return Math.sqrt(100) * bi.multiplier;
+  };
+  const entries = [
+    { key: "boosted", weight: mk(25) },
+    { key: "plain", weight: mk(0) },
+  ];
+  const out = allocate(500_000, entries);
+  assert.equal(out.get("boosted"), 300_000);
+  assert.equal(out.get("plain"), 200_000);
+  assert.equal(out.get("boosted") / out.get("plain"), 1.5);
+  // jackpot shape: sqrt x streak x boost — streak 2, boosted vs plain
+  const j = allocate(1_000_000, [
+    { key: "boosted", weight: Math.sqrt(100) * 2 * boostInfo(25, cfg).multiplier },
+    { key: "plain", weight: Math.sqrt(100) * 2 * 1 },
+  ]);
+  assert.deepEqual([j.get("boosted"), j.get("plain")], [600_000, 400_000]);
 });
 
 test("jackpot weighting shape: sqrt(balance) x streak", () => {

@@ -17,6 +17,11 @@
 //                 burn), 30% to survivors by sqrt(balance), 20% jackpot.
 //   5. jackpot  = draws when due (every N rounds or pool >= trigger),
 //                 weighted sqrt(balance) x streak, blockhash randomness.
+//   6. buy boost = a survivor who executed an actual swap BUY of at least
+//                 boostMinBuyUsd inside this round's window gets weight
+//                 x boostMultiplier for THIS round only (distribution and
+//                 jackpot). Transfer-ins never count; the boost is
+//                 recomputed every round and never stored in state.
 //
 // ============================================================================
 // LIVE MODE IS NOT IMPLEMENTED IN THIS BUILD — BY DESIGN.
@@ -29,10 +34,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { loadConfig, SURVIVOR_DIR } from "./config.mjs";
-import { splitPot, allocate, applyDust, batchPlan, jackpotPick, computeStreaks, sha256hex } from "./math.mjs";
+import { splitPot, allocate, applyDust, batchPlan, jackpotPick, computeStreaks, sha256hex, boostInfo } from "./math.mjs";
 import { loadState, saveState } from "./state.mjs";
 import { snapshotHolders } from "./snapshot.mjs";
-import { collectSells } from "./trades.mjs";
+import { collectSells, collectBuys } from "./trades.mjs";
 import { measureFees, getPrices, getLatestBlockhash, jupiterQuoteSolToToken, fmtSol, LAMPORTS } from "./lib.mjs";
 import { parseArgs, requirePubkey } from "../feelock/lib.mjs";
 
@@ -54,9 +59,13 @@ const roundNo = state.round + 1;
 const bootstrap = state.round === 0;
 const windowMs = cfg.sellWindowHours * 3_600_000;
 const scanSince = bootstrap ? now - windowMs : Math.max(state.lastRoundAt || 0, now - windowMs);
+// Buy Boost window = THIS round only: (previous round close, this close].
+// On the bootstrap round there is no previous close, so the window is one
+// round length. `state` still holds the previous round's values here.
+const roundWindowStart = state.lastRoundAt ?? now - cfg.roundMinutes * 60_000;
 
-// ---------- snapshot + prices + sells ----------
-let holders, infraExcluded = [], prices, sellsResult, snapshotMeta = {};
+// ---------- snapshot + prices + sells + buys ----------
+let holders, infraExcluded = [], prices, sellsResult, buysResult, transfersInObserved = [], snapshotMeta = {};
 if (fixture) {
   holders = fixture.holders.map((h) => ({ owner: h.owner, balanceRaw: String(h.balanceRaw), balanceUi: h.balanceUi, accounts: 1 }));
   infraExcluded = fixture.infraExcluded || [];
@@ -66,6 +75,19 @@ if (fixture) {
     if (s.atMs <= now && s.atMs > (last.get(s.wallet) || 0)) last.set(s.wallet, s.atMs);
   }
   sellsResult = { lastSellAt: last, coverage: { source: "fixture" }, truncatedWallets: [] };
+  // Fixture buys are authored swap buys ({wallet, atMs, usd}). Fixture
+  // transfer-ins are a SEPARATE list on purpose: they are reported for
+  // audit but never fed into buy detection — a transfer-in is not a buy.
+  const boughtUsd = new Map();
+  const buys = [];
+  for (const b of fixture.buys || []) {
+    if (b.atMs > roundWindowStart && b.atMs <= now) {
+      boughtUsd.set(b.wallet, (boughtUsd.get(b.wallet) || 0) + Number(b.usd || 0));
+      buys.push({ wallet: b.wallet, usd: Number(b.usd || 0), atMs: b.atMs, tx: null, source: "fixture" });
+    }
+  }
+  transfersInObserved = (fixture.transfersIn || []).filter((t) => t.atMs > roundWindowStart && t.atMs <= now);
+  buysResult = { boughtUsd, buys, coverage: { source: "fixture" }, truncatedWallets: [] };
   snapshotMeta = { mintProgram: "fixture", decimals: fixture.decimals ?? 6 };
 } else {
   const snap = await snapshotHolders(mint, creator, cfg);
@@ -74,6 +96,7 @@ if (fixture) {
   snapshotMeta = { mintProgram: snap.mintProgram, tokenProgramsSeen: snap.tokenProgramsSeen, decimals: snap.decimals };
   prices = await getPrices(mint);
   sellsResult = await collectSells({ mint, holders, sinceMs: scanSince, cfg });
+  buysResult = await collectBuys({ mint, creator, holders, sinceMs: roundWindowStart, untilMs: now, cfg, tokenUsd: prices.tokenUsd });
 }
 
 // ---------- merge sell history into state ----------
@@ -118,9 +141,22 @@ else {
 const splits = splitPot(potLamports, cfg);
 
 // ---------- survivor distribution (sqrt-weighted, dust, batches) ----------
+// Distribution weight = sqrt(balance) x boost multiplier (Buy Boost: a
+// survivor who swap-bought >= boostMinBuyUsd inside this round's window
+// attacks at x1.5 for this round only). Boost is computed fresh from this
+// round's buys — it is never written to state, so it cannot persist.
 const survivorEntries = holderRows
   .filter((h) => h.survivor)
-  .map((h) => ({ key: h.owner, weight: Math.sqrt(h.balanceUi), balanceUi: h.balanceUi, streak: state.wallets[h.owner].streak }));
+  .map((h) => {
+    const boughtUsd = buysResult.boughtUsd.get(h.owner) || 0;
+    const bi = boostInfo(boughtUsd, cfg);
+    const sqrtBalance = Math.sqrt(h.balanceUi);
+    return {
+      key: h.owner, weight: sqrtBalance * bi.multiplier, sqrtBalance,
+      boosted: bi.boosted, boostMultiplier: bi.multiplier, boughtUsd,
+      balanceUi: h.balanceUi, streak: state.wallets[h.owner].streak,
+    };
+  });
 let survivorPool = splits.survivor;
 let rolloverToJackpot = 0;
 let shares = new Map();
@@ -156,10 +192,18 @@ if (drawDue && survivorEntries.length > 0 && state.jackpotPoolLamports > 0) {
   let bh;
   if (fixture) bh = { blockhash: fixture.blockhash || "fixture-blockhash", slot: fixture.slot ?? null };
   else bh = await getLatestBlockhash();
-  const entries = survivorEntries.map((e) => ({ key: e.key, weight: Math.sqrt(e.balanceUi) * Math.max(1, e.streak) }));
+  // Jackpot weight = sqrt(balance) x streak x boost multiplier. e.weight
+  // already carries sqrt(balance) x boost, so this is e.weight x streak.
+  // The weight components travel with each entry so the published draw
+  // record lets anyone recompute every weight (and the winner).
+  const entries = survivorEntries.map((e) => ({
+    key: e.key, weight: e.weight * Math.max(1, e.streak),
+    sqrtBalance: e.sqrtBalance, streak: Math.max(1, e.streak),
+    boosted: e.boosted, boostMultiplier: e.boostMultiplier, boughtUsd: e.boughtUsd,
+  }));
   const winner = jackpotPick(entries, bh.blockhash, roundNo);
   const amount = state.jackpotPoolLamports;
-  draw = { winner, lamports: amount, blockhash: bh.blockhash, slot: bh.slot, entries: entries.map((e) => ({ wallet: e.key, weight: e.weight })) };
+  draw = { winner, lamports: amount, blockhash: bh.blockhash, slot: bh.slot, entries: entries.map((e) => ({ wallet: e.key, weight: e.weight, sqrtBalance: e.sqrtBalance, streak: e.streak, boosted: e.boosted, boostMultiplier: e.boostMultiplier, boughtUsd: e.boughtUsd })) };
   state.winners.push({ round: roundNo, at: now, wallet: winner, lamports: amount, blockhash: bh.blockhash, slot: bh.slot });
   state.totals.jackpotPaidLamports += amount;
   state.jackpotPoolLamports = 0;
@@ -198,14 +242,31 @@ const report = {
   truncatedSellScans: sellsResult.truncatedWallets,
   survivors: survivorEntries.map((e) => ({
     wallet: e.key, balanceUi: e.balanceUi, balanceUsd: prices.tokenUsd ? e.balanceUi * prices.tokenUsd : null,
-    streak: e.streak, shareLamports: shares.get(e.key) || 0,
+    streak: e.streak, sqrtBalance: e.sqrtBalance, weight: e.weight,
+    boosted: e.boosted, boostMultiplier: e.boostMultiplier, boughtUsd: e.boughtUsd,
+    shareLamports: shares.get(e.key) || 0,
     payableLamports: payable.get(e.key) || 0, dustCarriedLamports: carried.get(e.key) || 0,
   })),
   nonSurvivors: holderRows.filter((h) => !h.survivor).map((h) => ({
     wallet: h.owner, balanceUi: h.balanceUi, balanceUsd: h.balanceUsd,
     reason: h.balanceUsd !== null && h.balanceUsd < cfg.minHoldUsd ? "below_min_hold" : h.soldInWindow ? "sold_in_window" : "no_price_or_zero",
     lastSellAt: h.lastSellAt,
+    // A non-survivor's buys are shown for audit but earn NO boost: boost
+    // only ever applies to survivors (buy-then-sell disqualifies as usual).
+    boughtUsd: buysResult.boughtUsd.get(h.owner) || 0, boosted: false,
   })),
+  buyBoost: {
+    minBuyUsd: cfg.boostMinBuyUsd,
+    multiplier: cfg.boostMultiplier,
+    windowStartMs: roundWindowStart,
+    windowEndMs: now,
+    rule: "survivors who executed swap buys totalling >= minBuyUsd inside the round window get weight x multiplier for this round only (distribution and jackpot); transfer-ins never count",
+    boostedWallets: survivorEntries.filter((e) => e.boosted).map((e) => ({ wallet: e.key, boughtUsd: e.boughtUsd, boostMultiplier: e.boostMultiplier })),
+    buysDetected: buysResult.buys,
+    transfersInObserved,
+    coverage: buysResult.coverage,
+    truncatedBuyScans: buysResult.truncatedWallets,
+  },
   payoutBatches: batches.map((b, i) => ({ tx: i + 1, recipients: b.length, totalLamports: b.reduce((a, x) => a + x.lamports, 0), payments: b })),
   buyback,
   jackpot: { poolLamportsAfter: state.jackpotPoolLamports, drawDue, draw },
@@ -224,13 +285,17 @@ const md = [
   `- Pot: **${fmtSol(potLamports)} SOL** (${potSource})`,
   `- Split: burn ${fmtSol(splits.burn)} SOL · survivors ${fmtSol(splits.survivor)} SOL · jackpot ${fmtSol(splits.jackpot)} SOL` + (rolloverToJackpot ? ` · survivor slice rolled to jackpot (no survivors): ${fmtSol(rolloverToJackpot)} SOL` : ``),
   `- Holders (non-infra): ${holderRows.length} · Survivors: ${survivorEntries.length}`,
+  `- Buy Boost: ${report.buyBoost.boostedWallets.length ? report.buyBoost.boostedWallets.map((b) => `${b.wallet} x${b.boostMultiplier} (bought $${b.boughtUsd.toFixed(2)})`).join(", ") : "no boosted wallets this round"} (rule: swap buys >= $${cfg.boostMinBuyUsd} inside the round window; transfer-ins never count)`,
   `- Buyback: ${buyback.wouldBurnTokensRaw ? `would burn ${buyback.wouldBurnTokensRaw} raw tokens (Jupiter quote)` : `no quote — ${buyback.note || "n/a"}`}`,
   `- Survivor payouts: ${payable.size} wallet(s), ${fmtSol(survivorPaidTotal)} SOL in ${batches.length} batch(es) of <= ${cfg.batchMaxWallets}`,
   `- Jackpot pool after round: **${fmtSol(state.jackpotPoolLamports)} SOL**${draw && !draw.skipped ? ` — DRAWN: winner ${draw.winner} won ${fmtSol(draw.lamports)} SOL (blockhash ${draw.blockhash})` : drawDue ? ` — draw due but skipped: ${draw?.reason}` : ``}`,
   `- Snapshot hash: ${snapshotHash}`,
   ``,
   `## Survivors`,
-  ...(report.survivors.length ? report.survivors.map((s) => `- ${s.wallet} — ${s.balanceUi} tokens ($${s.balanceUsd?.toFixed(2)}), streak ${s.streak}, share ${fmtSol(s.shareLamports)} SOL, payable ${fmtSol(s.payableLamports)} SOL, dust ${fmtSol(s.dustCarriedLamports)} SOL`) : [`- (none)`]),
+  ...(report.survivors.length ? report.survivors.map((s) => `- ${s.wallet} — ${s.balanceUi} tokens ($${s.balanceUsd?.toFixed(2)}), streak ${s.streak}, share ${fmtSol(s.shareLamports)} SOL, payable ${fmtSol(s.payableLamports)} SOL, dust ${fmtSol(s.dustCarriedLamports)} SOL${s.boosted ? `, ⚡ BOOST x${s.boostMultiplier} (swap-bought $${s.boughtUsd.toFixed(2)} this round)` : ``}`) : [`- (none)`]),
+  ``,
+  `## Buy Boost`,
+  ...(report.buyBoost.boostedWallets.length ? report.buyBoost.boostedWallets.map((b) => `- ${b.wallet} — swap buys $${b.boughtUsd.toFixed(2)} in window -> weight x${b.boostMultiplier} (this round only)`) : [`- (no survivor reached the $${cfg.boostMinBuyUsd} buy threshold this round)`]),
   ``,
   `## Non-survivors`,
   ...(report.nonSurvivors.length ? report.nonSurvivors.map((s) => `- ${s.wallet} — ${s.balanceUi} tokens — ${s.reason}${s.lastSellAt ? ` (last sell ${new Date(s.lastSellAt).toISOString()})` : ``}`) : [`- (none)`]),
@@ -246,6 +311,7 @@ console.log(JSON.stringify({
   holders: holderRows.length, survivors: survivorEntries.length,
   splitsSol: { burn: fmtSol(splits.burn), survivor: fmtSol(splits.survivor), jackpot: fmtSol(splits.jackpot) },
   survivorPaidSol: fmtSol(survivorPaidTotal), payoutBatches: batches.length,
+  boostedWallets: report.buyBoost.boostedWallets,
   jackpotPoolSol: fmtSol(state.jackpotPoolLamports),
   draw: draw ? (draw.skipped ? `skipped: ${draw.reason}` : `winner ${draw.winner} +${fmtSol(draw.lamports)} SOL`) : "not due",
   report: path.join(roundsDir, stem + ".json"),

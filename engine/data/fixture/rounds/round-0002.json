@@ -44,8 +44,13 @@
       "balanceUi": 2360500,
       "balanceUsd": 4721,
       "streak": 2,
-      "shareLamports": 17131117,
-      "payableLamports": 17131117,
+      "sqrtBalance": 1536.3918770938617,
+      "weight": 2304.5878156407925,
+      "boosted": true,
+      "boostMultiplier": 1.5,
+      "boughtUsd": 40,
+      "shareLamports": 24308566,
+      "payableLamports": 24308566,
       "dustCarriedLamports": 0
     },
     {
@@ -53,8 +58,13 @@
       "balanceUi": 1588500,
       "balanceUsd": 3177,
       "streak": 2,
-      "shareLamports": 14053267,
-      "payableLamports": 14053267,
+      "sqrtBalance": 1260.3570922560002,
+      "weight": 1260.3570922560002,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 13294123,
+      "payableLamports": 13294123,
       "dustCarriedLamports": 0
     },
     {
@@ -62,8 +72,13 @@
       "balanceUi": 615500,
       "balanceUsd": 1231,
       "streak": 2,
-      "shareLamports": 8747777,
-      "payableLamports": 8747777,
+      "sqrtBalance": 784.5380806563821,
+      "weight": 784.5380806563821,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 8275231,
+      "payableLamports": 8275231,
       "dustCarriedLamports": 0
     },
     {
@@ -71,8 +86,13 @@
       "balanceUi": 2467000,
       "balanceUsd": 4934,
       "streak": 2,
-      "shareLamports": 17513311,
-      "payableLamports": 17513311,
+      "sqrtBalance": 1570.6686474237652,
+      "weight": 1570.6686474237652,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 16567259,
+      "payableLamports": 16567259,
       "dustCarriedLamports": 0
     },
     {
@@ -80,8 +100,13 @@
       "balanceUi": 1188500,
       "balanceUsd": 2377,
       "streak": 2,
-      "shareLamports": 12155793,
-      "payableLamports": 12155793,
+      "sqrtBalance": 1090.1834707974617,
+      "weight": 1090.1834707974617,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 11499149,
+      "payableLamports": 11499149,
       "dustCarriedLamports": 0
     },
     {
@@ -89,8 +114,13 @@
       "balanceUi": 692000,
       "balanceUsd": 1384,
       "streak": 2,
-      "shareLamports": 9275487,
-      "payableLamports": 9275487,
+      "sqrtBalance": 831.8653737234168,
+      "weight": 831.8653737234168,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 8774435,
+      "payableLamports": 8774435,
       "dustCarriedLamports": 0
     },
     {
@@ -98,8 +128,13 @@
       "balanceUi": 1017000,
       "balanceUsd": 2034,
       "streak": 2,
-      "shareLamports": 11244604,
-      "payableLamports": 11244604,
+      "sqrtBalance": 1008.4641788382967,
+      "weight": 1008.4641788382967,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 10637181,
+      "payableLamports": 10637181,
       "dustCarriedLamports": 0
     },
     {
@@ -107,8 +142,13 @@
       "balanceUi": 90500,
       "balanceUsd": 181,
       "streak": 2,
-      "shareLamports": 3354347,
-      "payableLamports": 3354347,
+      "sqrtBalance": 300.83217912982644,
+      "weight": 300.83217912982644,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 3173148,
+      "payableLamports": 3173148,
       "dustCarriedLamports": 0
     },
     {
@@ -116,8 +156,13 @@
       "balanceUi": 1087000,
       "balanceUsd": 2174,
       "streak": 2,
-      "shareLamports": 11625147,
-      "payableLamports": 11625147,
+      "sqrtBalance": 1042.5929215182693,
+      "weight": 1042.5929215182693,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 10997168,
+      "payableLamports": 10997168,
       "dustCarriedLamports": 0
     },
     {
@@ -125,8 +170,13 @@
       "balanceUi": 163000,
       "balanceUsd": 326,
       "streak": 2,
-      "shareLamports": 4501710,
-      "payableLamports": 4501710,
+      "sqrtBalance": 403.732584763727,
+      "weight": 403.732584763727,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 4258532,
+      "payableLamports": 4258532,
       "dustCarriedLamports": 0
     },
     {
@@ -134,8 +184,13 @@
       "balanceUi": 1874500,
       "balanceUsd": 3749,
       "streak": 2,
-      "shareLamports": 15266041,
-      "payableLamports": 15266041,
+      "sqrtBalance": 1369.1238074038447,
+      "weight": 1369.1238074038447,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 14441384,
+      "payableLamports": 14441384,
       "dustCarriedLamports": 0
     },
     {
@@ -143,8 +198,13 @@
       "balanceUi": 150000,
       "balanceUsd": 300,
       "streak": 2,
-      "shareLamports": 4318464,
-      "payableLamports": 4318464,
+      "sqrtBalance": 387.2983346207417,
+      "weight": 387.2983346207417,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 4085185,
+      "payableLamports": 4085185,
       "dustCarriedLamports": 0
     },
     {
@@ -152,8 +212,13 @@
       "balanceUi": 15000,
       "balanceUsd": 30,
       "streak": 2,
-      "shareLamports": 1365618,
-      "payableLamports": 1365618,
+      "sqrtBalance": 122.47448713915891,
+      "weight": 122.47448713915891,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1291849,
+      "payableLamports": 1291849,
       "dustCarriedLamports": 0
     },
     {
@@ -161,8 +226,13 @@
       "balanceUi": 17500,
       "balanceUsd": 35,
       "streak": 2,
-      "shareLamports": 1475036,
-      "payableLamports": 1475036,
+      "sqrtBalance": 132.28756555322954,
+      "weight": 132.28756555322954,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1395356,
+      "payableLamports": 1395356,
       "dustCarriedLamports": 0
     },
     {
@@ -170,8 +240,13 @@
       "balanceUi": 20000,
       "balanceUsd": 40,
       "streak": 2,
-      "shareLamports": 1576880,
-      "payableLamports": 1576880,
+      "sqrtBalance": 141.4213562373095,
+      "weight": 141.4213562373095,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1491699,
+      "payableLamports": 1491699,
       "dustCarriedLamports": 0
     },
     {
@@ -179,8 +254,13 @@
       "balanceUi": 22500,
       "balanceUsd": 45,
       "streak": 2,
-      "shareLamports": 1672534,
-      "payableLamports": 1672534,
+      "sqrtBalance": 150,
+      "weight": 150,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1582185,
+      "payableLamports": 1582185,
       "dustCarriedLamports": 0
     },
     {
@@ -188,8 +268,13 @@
       "balanceUi": 21500,
       "balanceUsd": 43,
       "streak": 2,
-      "shareLamports": 1634944,
-      "payableLamports": 1634944,
+      "sqrtBalance": 146.6287829861518,
+      "weight": 146.6287829861518,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1546626,
+      "payableLamports": 1546626,
       "dustCarriedLamports": 0
     },
     {
@@ -197,8 +282,13 @@
       "balanceUi": 12500,
       "balanceUsd": 25,
       "streak": 2,
-      "shareLamports": 1246633,
-      "payableLamports": 1246633,
+      "sqrtBalance": 111.80339887498948,
+      "weight": 111.80339887498948,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1179291,
+      "payableLamports": 1179291,
       "dustCarriedLamports": 0
     },
     {
@@ -206,8 +296,13 @@
       "balanceUi": 205500,
       "balanceUsd": 411,
       "streak": 2,
-      "shareLamports": 5054633,
-      "payableLamports": 5054633,
+      "sqrtBalance": 453.3210782657255,
+      "weight": 453.3210782657255,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 4781586,
+      "payableLamports": 4781586,
       "dustCarriedLamports": 0
     },
     {
@@ -215,8 +310,13 @@
       "balanceUi": 167000,
       "balanceUsd": 334,
       "streak": 2,
-      "shareLamports": 4556611,
-      "payableLamports": 4556611,
+      "sqrtBalance": 408.656334834051,
+      "weight": 408.656334834051,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 4310467,
+      "payableLamports": 4310467,
       "dustCarriedLamports": 0
     },
     {
@@ -224,8 +324,13 @@
       "balanceUi": 10000,
       "balanceUsd": 20,
       "streak": 2,
-      "shareLamports": 1115023,
-      "payableLamports": 1115023,
+      "sqrtBalance": 100,
+      "weight": 100,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1054790,
+      "payableLamports": 1054790,
       "dustCarriedLamports": 0
     },
     {
@@ -233,8 +338,13 @@
       "balanceUi": 10000,
       "balanceUsd": 20,
       "streak": 2,
-      "shareLamports": 1115023,
-      "payableLamports": 1115023,
+      "sqrtBalance": 100,
+      "weight": 100,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
+      "shareLamports": 1054790,
+      "payableLamports": 1054790,
       "dustCarriedLamports": 0
     }
   ],
@@ -244,158 +354,202 @@
       "balanceUi": 68500,
       "balanceUsd": 137,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "mpEAQv42Bick4dK3pH1At6mYBMMgfk9WpM8eAtrG4DHP",
       "balanceUi": 159000,
       "balanceUsd": 318,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "cTwFhHiS5BFk4YruzwcEpaTrtybKugBtxi2MxYBPqftG",
       "balanceUi": 65000,
       "balanceUsd": 130,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "THHSKSwY6wJ8eF2kwpfGRuu7vjhfGCH3ednegKC87NdT",
       "balanceUi": 168500,
       "balanceUsd": 337,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "Z2RRstE5SWXd3E12JLStWTtuvBi9odk2X2r57keLRLSr",
       "balanceUi": 5500,
       "balanceUsd": 11,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "MC32xvzVJQz1YwjyvtHEBzvQJWPgip46L7k3oCEXZaJ8",
       "balanceUi": 9000,
       "balanceUsd": 18,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "WwMFPeMSv49djVfWgbq3pWfukJZm2TvTbMNhi8jTvK8d",
       "balanceUi": 6000,
       "balanceUsd": 12,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "Yz8z4M7TEdse1F6w9nrNEFAiiafu7pK2Q6TxqfcUztsJ",
       "balanceUi": 7500,
       "balanceUsd": 15,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     }
   ],
+  "buyBoost": {
+    "minBuyUsd": 5,
+    "multiplier": 1.5,
+    "windowStartMs": 1793900000000,
+    "windowEndMs": 1793900600000,
+    "rule": "survivors who executed swap buys totalling >= minBuyUsd inside the round window get weight x multiplier for this round only (distribution and jackpot); transfer-ins never count",
+    "boostedWallets": [
+      {
+        "wallet": "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP",
+        "boughtUsd": 40,
+        "boostMultiplier": 1.5
+      }
+    ],
+    "buysDetected": [
+      {
+        "wallet": "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP",
+        "usd": 40,
+        "atMs": 1793900300000,
+        "tx": null,
+        "source": "fixture"
+      }
+    ],
+    "transfersInObserved": [],
+    "coverage": {
+      "source": "fixture"
+    },
+    "truncatedBuyScans": []
+  },
   "payoutBatches": [
     {
       "tx": 1,
       "recipients": 18,
-      "totalLamports": 145157703,
+      "totalLamports": 145419280,
       "payments": [
         {
-          "wallet": "sXuf2hKoCVCuLHWsLjaasoNcgNwV4jARWavssBes814u",
-          "lamports": 17513311
+          "wallet": "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP",
+          "lamports": 24308566
         },
         {
-          "wallet": "WZNbdGyPSJTo9MdRC38Vee9xVvqrxKnqD6kRFv6kMLZP",
-          "lamports": 17131117
+          "wallet": "sXuf2hKoCVCuLHWsLjaasoNcgNwV4jARWavssBes814u",
+          "lamports": 16567259
         },
         {
           "wallet": "cmGC1MSte7qGcAXqJaZ83JkMWzuDFtSd7XqvohNWmAxr",
-          "lamports": 15266041
+          "lamports": 14441384
         },
         {
           "wallet": "P97mRvcmcjKs15Rr5vGppcu7bq6zaV4JjDaxzWoxCcLc",
-          "lamports": 14053267
+          "lamports": 13294123
         },
         {
           "wallet": "oFAEYzeMaEsXWko8kCLEAhEN327myqbPhN5HdD1BmNWP",
-          "lamports": 12155793
+          "lamports": 11499149
         },
         {
           "wallet": "ZVpav6a1eRKbBc4yCJ1C52Cvis4hzStx65GKwKdgPST2",
-          "lamports": 11625147
+          "lamports": 10997168
         },
         {
           "wallet": "jinCsG17VSMYsZz9T2tDRNEQo9qeEiNR6VSpzjnMdBUR",
-          "lamports": 11244604
+          "lamports": 10637181
         },
         {
           "wallet": "gQBP2eiAC4dHQsWbxY26gSipcJjKFNuAYcDUHv9NuT5y",
-          "lamports": 9275487
+          "lamports": 8774435
         },
         {
           "wallet": "wzLMGNttfdF7MdgtmVDKBWJDBfhDuosmfK9KPQpPzFBR",
-          "lamports": 8747777
+          "lamports": 8275231
         },
         {
           "wallet": "czcdqHNpRyqHMFLs8F1Qh8UhHYU2o8z7rGd3gGBFjnt2",
-          "lamports": 5054633
+          "lamports": 4781586
         },
         {
           "wallet": "MTasVZCfm247AMen6wvdzsSDver9B2fqV2vzC74Ak2ts",
-          "lamports": 4556611
+          "lamports": 4310467
         },
         {
           "wallet": "891RZ56Fx298X8BkjNYFsvLbWpN6GT4mqAriiZiQQop1",
-          "lamports": 4501710
+          "lamports": 4258532
         },
         {
           "wallet": "yuCcEW6irhDaiafeZWm5WQFxLDskVN6bCHnFmLk6NtSw",
-          "lamports": 4318464
+          "lamports": 4085185
         },
         {
           "wallet": "tPEjRxBjn9cJAXW6sZeCpksKHoHrbH6yQCh5e2A9Z1KJ",
-          "lamports": 3354347
+          "lamports": 3173148
         },
         {
           "wallet": "1B4vTQVzHz7kSmeL9rj36PeV7HyZuSpaShUXs9oGt5kZ",
-          "lamports": 1672534
+          "lamports": 1582185
         },
         {
           "wallet": "R3LgyHshZxkzCJiRjNbo5g1K8MRKZW3WuvJsbZXSdARe",
-          "lamports": 1634944
+          "lamports": 1546626
         },
         {
           "wallet": "ZDuWXoXi3nhXfvZNwv23gdV8XDiyaQvQaUSoPgSEsNRq",
-          "lamports": 1576880
+          "lamports": 1491699
         },
         {
           "wallet": "sS7sNUyZ7WWHHoejydwSdoUkojzeeiyRizR8wAvrDzfa",
-          "lamports": 1475036
+          "lamports": 1395356
         }
       ]
     },
     {
       "tx": 2,
       "recipients": 4,
-      "totalLamports": 4842297,
+      "totalLamports": 4580720,
       "payments": [
         {
           "wallet": "XgQYSmR1W8GD7fvBMmCyxtRZwqmVXPWncwNdQq3MS4DC",
-          "lamports": 1365618
+          "lamports": 1291849
         },
         {
           "wallet": "qeTLtvvE8U6P7G9NGJaBNWfeMExLyrKeo5zgvseonPc6",
-          "lamports": 1246633
+          "lamports": 1179291
         },
         {
           "wallet": "j6XeJc23iaQfowHFMxq7PCrBBpUQYvi4XNmXZxvZZTcw",
-          "lamports": 1115023
+          "lamports": 1054790
         },
         {
           "wallet": "px2HrBDM5ybnH5CWWJQ1yxiPW7KXjSJZCGK3FUtMS7yT",
-          "lamports": 1115023
+          "lamports": 1054790
         }
       ]
     }

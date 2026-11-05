@@ -44,6 +44,11 @@
       "balanceUi": 2360500,
       "balanceUsd": 4721,
       "streak": 1,
+      "sqrtBalance": 1536.3918770938617,
+      "weight": 1536.3918770938617,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 17131117,
       "payableLamports": 17131117,
       "dustCarriedLamports": 0
@@ -53,6 +58,11 @@
       "balanceUi": 1588500,
       "balanceUsd": 3177,
       "streak": 1,
+      "sqrtBalance": 1260.3570922560002,
+      "weight": 1260.3570922560002,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 14053267,
       "payableLamports": 14053267,
       "dustCarriedLamports": 0
@@ -62,6 +72,11 @@
       "balanceUi": 615500,
       "balanceUsd": 1231,
       "streak": 1,
+      "sqrtBalance": 784.5380806563821,
+      "weight": 784.5380806563821,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 8747777,
       "payableLamports": 8747777,
       "dustCarriedLamports": 0
@@ -71,6 +86,11 @@
       "balanceUi": 2467000,
       "balanceUsd": 4934,
       "streak": 1,
+      "sqrtBalance": 1570.6686474237652,
+      "weight": 1570.6686474237652,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 17513311,
       "payableLamports": 17513311,
       "dustCarriedLamports": 0
@@ -80,6 +100,11 @@
       "balanceUi": 1188500,
       "balanceUsd": 2377,
       "streak": 1,
+      "sqrtBalance": 1090.1834707974617,
+      "weight": 1090.1834707974617,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 12155793,
       "payableLamports": 12155793,
       "dustCarriedLamports": 0
@@ -89,6 +114,11 @@
       "balanceUi": 692000,
       "balanceUsd": 1384,
       "streak": 1,
+      "sqrtBalance": 831.8653737234168,
+      "weight": 831.8653737234168,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 9275487,
       "payableLamports": 9275487,
       "dustCarriedLamports": 0
@@ -98,6 +128,11 @@
       "balanceUi": 1017000,
       "balanceUsd": 2034,
       "streak": 1,
+      "sqrtBalance": 1008.4641788382967,
+      "weight": 1008.4641788382967,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 11244604,
       "payableLamports": 11244604,
       "dustCarriedLamports": 0
@@ -107,6 +142,11 @@
       "balanceUi": 90500,
       "balanceUsd": 181,
       "streak": 1,
+      "sqrtBalance": 300.83217912982644,
+      "weight": 300.83217912982644,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 3354347,
       "payableLamports": 3354347,
       "dustCarriedLamports": 0
@@ -116,6 +156,11 @@
       "balanceUi": 1087000,
       "balanceUsd": 2174,
       "streak": 1,
+      "sqrtBalance": 1042.5929215182693,
+      "weight": 1042.5929215182693,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 11625147,
       "payableLamports": 11625147,
       "dustCarriedLamports": 0
@@ -125,6 +170,11 @@
       "balanceUi": 163000,
       "balanceUsd": 326,
       "streak": 1,
+      "sqrtBalance": 403.732584763727,
+      "weight": 403.732584763727,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 4501710,
       "payableLamports": 4501710,
       "dustCarriedLamports": 0
@@ -134,6 +184,11 @@
       "balanceUi": 1874500,
       "balanceUsd": 3749,
       "streak": 1,
+      "sqrtBalance": 1369.1238074038447,
+      "weight": 1369.1238074038447,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 15266041,
       "payableLamports": 15266041,
       "dustCarriedLamports": 0
@@ -143,6 +198,11 @@
       "balanceUi": 150000,
       "balanceUsd": 300,
       "streak": 1,
+      "sqrtBalance": 387.2983346207417,
+      "weight": 387.2983346207417,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 4318464,
       "payableLamports": 4318464,
       "dustCarriedLamports": 0
@@ -152,6 +212,11 @@
       "balanceUi": 15000,
       "balanceUsd": 30,
       "streak": 1,
+      "sqrtBalance": 122.47448713915891,
+      "weight": 122.47448713915891,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1365618,
       "payableLamports": 1365618,
       "dustCarriedLamports": 0
@@ -161,6 +226,11 @@
       "balanceUi": 17500,
       "balanceUsd": 35,
       "streak": 1,
+      "sqrtBalance": 132.28756555322954,
+      "weight": 132.28756555322954,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1475036,
       "payableLamports": 1475036,
       "dustCarriedLamports": 0
@@ -170,6 +240,11 @@
       "balanceUi": 20000,
       "balanceUsd": 40,
       "streak": 1,
+      "sqrtBalance": 141.4213562373095,
+      "weight": 141.4213562373095,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1576880,
       "payableLamports": 1576880,
       "dustCarriedLamports": 0
@@ -179,6 +254,11 @@
       "balanceUi": 22500,
       "balanceUsd": 45,
       "streak": 1,
+      "sqrtBalance": 150,
+      "weight": 150,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1672534,
       "payableLamports": 1672534,
       "dustCarriedLamports": 0
@@ -188,6 +268,11 @@
       "balanceUi": 21500,
       "balanceUsd": 43,
       "streak": 1,
+      "sqrtBalance": 146.6287829861518,
+      "weight": 146.6287829861518,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1634944,
       "payableLamports": 1634944,
       "dustCarriedLamports": 0
@@ -197,6 +282,11 @@
       "balanceUi": 12500,
       "balanceUsd": 25,
       "streak": 1,
+      "sqrtBalance": 111.80339887498948,
+      "weight": 111.80339887498948,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1246633,
       "payableLamports": 1246633,
       "dustCarriedLamports": 0
@@ -206,6 +296,11 @@
       "balanceUi": 205500,
       "balanceUsd": 411,
       "streak": 1,
+      "sqrtBalance": 453.3210782657255,
+      "weight": 453.3210782657255,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 5054633,
       "payableLamports": 5054633,
       "dustCarriedLamports": 0
@@ -215,6 +310,11 @@
       "balanceUi": 167000,
       "balanceUsd": 334,
       "streak": 1,
+      "sqrtBalance": 408.656334834051,
+      "weight": 408.656334834051,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 4556611,
       "payableLamports": 4556611,
       "dustCarriedLamports": 0
@@ -224,6 +324,11 @@
       "balanceUi": 10000,
       "balanceUsd": 20,
       "streak": 1,
+      "sqrtBalance": 100,
+      "weight": 100,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1115023,
       "payableLamports": 1115023,
       "dustCarriedLamports": 0
@@ -233,6 +338,11 @@
       "balanceUi": 10000,
       "balanceUsd": 20,
       "streak": 1,
+      "sqrtBalance": 100,
+      "weight": 100,
+      "boosted": false,
+      "boostMultiplier": 1,
+      "boughtUsd": 0,
       "shareLamports": 1115023,
       "payableLamports": 1115023,
       "dustCarriedLamports": 0
@@ -244,58 +354,88 @@
       "balanceUi": 68500,
       "balanceUsd": 137,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "mpEAQv42Bick4dK3pH1At6mYBMMgfk9WpM8eAtrG4DHP",
       "balanceUi": 159000,
       "balanceUsd": 318,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "cTwFhHiS5BFk4YruzwcEpaTrtybKugBtxi2MxYBPqftG",
       "balanceUi": 65000,
       "balanceUsd": 130,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "THHSKSwY6wJ8eF2kwpfGRuu7vjhfGCH3ednegKC87NdT",
       "balanceUi": 168500,
       "balanceUsd": 337,
       "reason": "sold_in_window",
-      "lastSellAt": 1793878400000
+      "lastSellAt": 1793878400000,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "Z2RRstE5SWXd3E12JLStWTtuvBi9odk2X2r57keLRLSr",
       "balanceUi": 5500,
       "balanceUsd": 11,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "MC32xvzVJQz1YwjyvtHEBzvQJWPgip46L7k3oCEXZaJ8",
       "balanceUi": 9000,
       "balanceUsd": 18,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "WwMFPeMSv49djVfWgbq3pWfukJZm2TvTbMNhi8jTvK8d",
       "balanceUi": 6000,
       "balanceUsd": 12,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     },
     {
       "wallet": "Yz8z4M7TEdse1F6w9nrNEFAiiafu7pK2Q6TxqfcUztsJ",
       "balanceUi": 7500,
       "balanceUsd": 15,
       "reason": "below_min_hold",
-      "lastSellAt": null
+      "lastSellAt": null,
+      "boughtUsd": 0,
+      "boosted": false
     }
   ],
+  "buyBoost": {
+    "minBuyUsd": 5,
+    "multiplier": 1.5,
+    "windowStartMs": 1793899400000,
+    "windowEndMs": 1793900000000,
+    "rule": "survivors who executed swap buys totalling >= minBuyUsd inside the round window get weight x multiplier for this round only (distribution and jackpot); transfer-ins never count",
+    "boostedWallets": [],
+    "buysDetected": [],
+    "transfersInObserved": [],
+    "coverage": {
+      "source": "fixture"
+    },
+    "truncatedBuyScans": []
+  },
   "payoutBatches": [
     {
       "tx": 1,

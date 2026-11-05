@@ -102,6 +102,28 @@ export function jackpotPick(entries, blockhash, roundNo) {
   return scaled[scaled.length - 1].key;
 }
 
+// --- Buy Boost (DESIGN.md §3.6) -------------------------------------------
+// A "buy" for boost purposes is an actual SWAP buy: in the same transaction
+// the wallet's token balance increased AND tokens left the bonding-curve /
+// PumpSwap pool vault (the sell side of the swap). A plain transfer-in also
+// increases the wallet's balance, but no vault account moves — so it is NOT
+// a buy and can never farm the boost by shuffling tokens between wallets.
+// Deltas are raw token amounts (BigInt-compatible: bigint, number or string).
+export function isSwapBuy(ownerDeltaRaw, vaultDeltaRaw) {
+  return BigInt(ownerDeltaRaw) > 0n && BigInt(vaultDeltaRaw) < 0n;
+}
+
+// Boost decision for one wallet in one round. boughtUsd is the summed USD
+// value of the wallet's detected swap buys inside the round window.
+// Returns { boosted, multiplier } — multiplier is what the caller applies
+// to BOTH the distribution weight and the jackpot weight for this round.
+// Purely a function of THIS round's buys: nothing here reads or writes
+// state, so a boost can never leak into the next round.
+export function boostInfo(boughtUsd, { boostMinBuyUsd, boostMultiplier }) {
+  const boosted = Number(boughtUsd) >= boostMinBuyUsd && Number(boughtUsd) > 0;
+  return { boosted, multiplier: boosted ? boostMultiplier : 1 };
+}
+
 // Pure streak transition. prev: Map wallet -> streak. survivors: Set of
 // wallets that ARE survivors this round. Any tracked wallet that is not a
 // survivor this round drops to 0 (sold, fell below the minimum, or emptied).

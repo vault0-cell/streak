@@ -41,6 +41,17 @@ export const DEFAULTS = {
   jackpotEveryRounds: 144,                 // ~24h at 10-minute rounds
   jackpotTriggerLamports: 1_000_000_000,   // ... or draw early once pool >= 1 SOL
 
+  // Buy Boost (the attack move): a SURVIVOR who executes an actual swap BUY
+  // of at least boostMinBuyUsd within the current round window gets its
+  // weight multiplied by boostMultiplier for THAT ROUND ONLY — both the
+  // survivor-distribution weight and the jackpot-draw weight. Plain
+  // transfer-ins never count (see trades.mjs / DESIGN.md). The boost is
+  // recomputed from scratch every round and is never stored in state, so
+  // it cannot persist without a fresh buy.
+  boostMultiplier: 1.5,
+  boostMinBuyUsd: 5,
+  onChainBuyScan: true,        // per-holder ATA scan over the round window
+
   // Live-mode parameters (documented here, enforced only by the future executor)
   minClaimLamports: 20_000_000,     // skip a live claim below 0.02 SOL (tx fees)
   engineFloatLamports: 500_000_000, // 0.5 SOL operating float for the engine wallet
