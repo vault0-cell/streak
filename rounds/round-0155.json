@@ -1,0 +1,118 @@
+{
+  "engine": "survivor-engine",
+  "mode": "LIVE — executed by executor.mjs (engine wallet, journaled in journal.jsonl)",
+  "round": 155,
+  "at": 1793935937156,
+  "atIso": "2026-11-06T03:32:17.156Z",
+  "mint": "8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump",
+  "creator": "5adK17ocNpfrMbTULJAQtQDun5nLth8QnDdU8PZt9ksi",
+  "pot": {
+    "lamports": 0,
+    "sol": "0.0",
+    "source": "live claim by engine wallet (skipped)"
+  },
+  "splits": {
+    "burnLamports": 0,
+    "survivorLamports": 0,
+    "jackpotLamports": 0,
+    "survivorRolloverToJackpot": 0,
+    "bps": {
+      "burn": 5000,
+      "survivor": 3000,
+      "jackpot": 2000
+    }
+  },
+  "prices": {
+    "tokenUsd": 0.000002525227615659161,
+    "solUsd": 89.69654622952697,
+    "source": "jupiter-lite-v3"
+  },
+  "snapshot": {
+    "mintProgram": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "tokenProgramsSeen": [
+      "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+    ],
+    "decimals": 6,
+    "holders": 0,
+    "infraExcluded": [
+      {
+        "owner": "BLxdJozwRwcGWzCawdTkgpRR4QVj6mgPDBxMB6335eh",
+        "balanceRaw": "1000000000000000",
+        "balanceUi": 1000000000,
+        "accounts": 1,
+        "reason": "bonding_curve"
+      }
+    ],
+    "snapshotHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sellsCoverage": {
+    "collectorRowsMatched": 0,
+    "walletLogFilesRead": 0,
+    "onChainHoldersScanned": 0,
+    "holdersTotal": 0,
+    "note": "collector swaps log is a smart-money sample (LSCAN V1/V2 absent); per-wallet logs cover tracked wallets only; on-chain ATA scan is the authoritative fallback and is capped per wallet"
+  },
+  "truncatedSellScans": [],
+  "survivors": [],
+  "nonSurvivors": [],
+  "buyBoost": {
+    "minBuyUsd": 5,
+    "multiplier": 1.5,
+    "windowStartMs": 1793935336712,
+    "windowEndMs": 1793935937156,
+    "rule": "survivors who executed swap buys totalling >= minBuyUsd inside the round window get weight x multiplier for this round only (distribution and jackpot); transfer-ins never count",
+    "boostedWallets": [],
+    "buysDetected": [],
+    "transfersInObserved": [],
+    "coverage": {
+      "collectorRowsMatched": 0,
+      "walletLogFilesRead": 0,
+      "onChainHoldersScanned": 0,
+      "holdersTotal": 0,
+      "buysAfterDedupe": 0,
+      "valuation": "log rows carry their own USD value; on-chain buys are valued as tokens received x round-close token price",
+      "note": "collector swaps log is a smart-money sample and per-wallet logs cover tracked wallets only; the on-chain ATA scan is the authoritative source for swap buys (vault-delta test) but only sees the canonical pump/PumpSwap vaults — post-graduation buys routed through other DEXs leave no vault trace and are missed by the on-chain source"
+    },
+    "truncatedBuyScans": []
+  },
+  "payoutBatches": [],
+  "buyback": {
+    "solLamports": 0,
+    "quote": null,
+    "wouldBurnTokensRaw": null,
+    "note": null
+  },
+  "jackpot": {
+    "poolLamportsAfter": 0,
+    "drawDue": true,
+    "draw": {
+      "skipped": true,
+      "reason": "no survivors to draw among — pool carries"
+    }
+  },
+  "execution": {
+    "claim": {
+      "status": "skipped",
+      "reason": "below_min_claim",
+      "claimableLamports": 0,
+      "claimedLamports": 0
+    },
+    "payouts": {
+      "status": "none",
+      "reason": "no payable survivors this round"
+    },
+    "buyback": {
+      "status": "none",
+      "reason": "burn slice is zero"
+    },
+    "hasFailures": false
+  },
+  "totals": {
+    "claimedLamports": 0,
+    "burnSolLamports": 0,
+    "burnTokensRaw": "0",
+    "survivorPaidLamports": 0,
+    "survivorCarriedLamports": 0,
+    "jackpotPaidLamports": 0
+  }
+}
