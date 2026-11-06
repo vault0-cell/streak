@@ -8,9 +8,9 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT">
-  <img src="https://img.shields.io/badge/Status-pre--launch-orange" alt="Status: pre-launch">
+  <img src="https://img.shields.io/badge/Status-concluded-lightgrey" alt="Status: concluded">
   <img src="https://img.shields.io/badge/Chain-Solana-9945FF" alt="Chain: Solana">
-  <img src="https://img.shields.io/badge/Engine-simulation--live-3dff7a" alt="Engine: simulation-live">
+  <img src="https://img.shields.io/badge/Engine-stopped-lightgrey" alt="Engine: stopped">
 </p>
 
 <p align="center"><a href="https://vault0-cell.github.io/streak/streak-hype.mp4">▶ Watch the 12s teaser</a></p>
@@ -26,13 +26,15 @@ eventually takes home.
 
 No staking. No claiming. No wallet connection. Hold, don't move, survive.
 
-> **Status: PRE-LAUNCH.** The token does not exist yet. The engine is built
-> and running in public simulation (see `rounds/sample/` and
-> `engine/sample-page.html`). The only real contract address will be the one
-> announced through the official links below — anything else is an
-> impersonator.
+> **Status: CONCLUDED.** $STREAK launched on pump.fun on 2026-11-05
+> (CA: `8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump`). The Survivor Engine
+> then ran live for 240 rounds (2026-11-05 to 2026-11-07), publishing a
+> public report every 10 minutes. No external trades ever occurred, so
+> every round's pot was zero. The engine was stopped on 2026-11-07 and
+> the project is closed. This repository remains public as the full
+> record: design, code, and every round report.
 
-**Token CA:** TBA · **X:** TBA · **Site:** https://vault0-cell.github.io/streak/
+**Token CA:** `8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump` · **X:** https://x.com/StreakDevv · **Site:** https://vault0-cell.github.io/streak/
 
 ---
 
@@ -197,10 +199,11 @@ is run by the STREAK team.
 - [x] Buy Boost rule implemented and tested
 - [x] Transparency repository public (this repo)
 - [x] Landing page live on GitHub Pages
-- [ ] Live executor (real claim / payout / burn execution) — in progress
-- [ ] Engine wallet created and fee sharing configured at launch
-- [ ] Token launch on pump.fun (pending the remaining user steps)
-- [ ] First live rounds published to `rounds/`
+- [x] Live executor (real claim / payout / burn execution) built
+- [x] Engine wallet created and fee sharing configured at launch
+- [x] Token launch on pump.fun (2026-11-05)
+- [x] Live rounds published to `rounds/` — 240 rounds
+- [x] Engine stopped and project concluded (2026-11-07) — record kept public
 
 ---
 
@@ -219,9 +222,9 @@ is run by the STREAK team.
 
 ## Links
 
-- **Token (pump.fun):** TBA
-- **Contract address:** TBA
-- **X:** TBA
+- **Token (pump.fun):** https://pump.fun/coin/8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump
+- **Contract address:** `8WamQDvQSoHPMHj4NPy5H8cgaH3TEQJpRRKvWisspump`
+- **X:** https://x.com/StreakDevv
 - **Site:** https://vault0-cell.github.io/streak/
 
 ---
